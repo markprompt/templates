@@ -1,0 +1,4 @@
+types/supabase.ts
+.next/
+node_modules/
+coverage/
