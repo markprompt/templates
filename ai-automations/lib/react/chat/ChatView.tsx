@@ -100,7 +100,7 @@ export function ChatView(props: ChatViewProps): JSX.Element {
             givenName: 'Alice',
             surname: 'Hansen',
             email: 'alice@acme.com',
-            avatarUrl: 'https://markprompt-ai-automations.vercel.app/avatar.png',
+            avatarUrl: '/avatar.png',
           };
         } else {
           userInfo = {
