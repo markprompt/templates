@@ -2,8 +2,8 @@
 
 This is a repository of ready-to-use examples of AI customer support applications based on Markprompt.
 
-- [Ticket deflector]()
-- [AI automations]()
+- [Ticket deflector](https://github.com/motifland/examples/tree/main/ticket-deflector)
+- [AI automations](https://github.com/motifland/examples/tree/main/ai-automations)
 
 ## Community
 
@@ -12,4 +12,4 @@ This is a repository of ready-to-use examples of AI customer support application
 
 ## License
 
-[Apache](./LICENSE) © [Markprompt](https://markprompt.com)
+[MIT](./LICENSE) © [Markprompt](https://markprompt.com)
