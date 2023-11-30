@@ -2,18 +2,17 @@
 
 A Next.js application that automatically answers customer questions, and triages and summarizes tickets before they are submitted.
 
-## Getting Started
-
-First, run the development server:
+To run locally:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Learn More
+
+To learn more about Markprompt, take a look at the following resources:
+
+- [Markprompt Documentation](https://markprompt.com/docs) - learn about the Markprompt APIs and SDKs, and techniques for working with LLMs.
+- Follow us on [X](https://x.com/markprompt)
+- Join our [Discord](https://discord.gg/MBMh4apz6X)

@@ -4,18 +4,17 @@ A Next.js application that triggers automations via API calls, such as cancellin
 
 Note: this example currently uses a yet unreleased version of the Markprompt SDK, copied verbatim in the `lib/core` folder. This will soon be removed and work with a single import statement from `@markprompt/core`.
 
-## Getting Started
-
-First, run the development server:
+To run locally:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Learn More
+
+To learn more about Markprompt, take a look at the following resources:
+
+- [Markprompt Documentation](https://markprompt.com/docs) - learn about the Markprompt APIs and SDKs, and techniques for working with LLMs.
+- Follow us on [X](https://x.com/markprompt)
+- Join our [Discord](https://discord.gg/MBMh4apz6X)
