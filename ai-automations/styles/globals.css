@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'ui.css';
+@import 'select.css';
+@import 'dropdown.css';
 @import 'dom.css';
 
 :root {
@@ -55,7 +56,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   /* Support Docusaurus dark theme data attribute */
-  :not([data-theme="light"]):root {
+  :not([data-theme='light']):root {
     --markprompt-background: #050505;
     --markprompt-foreground: #d4d4d4;
     --markprompt-muted: #171717;
@@ -75,7 +76,7 @@ body {
 }
 
 /* Support Docusaurus dark theme data attribute */
-[data-theme="dark"]:root {
+[data-theme='dark']:root {
   --markprompt-background: #050505;
   --markprompt-foreground: #d4d4d4;
   --markprompt-muted: #171717;
@@ -93,14 +94,14 @@ body {
   --markprompt-ring: #fff;
 }
 
-:where([class^="Markprompt"]) {
+:where([class^='Markprompt']) {
   box-sizing: border-box;
 }
 
 :where(
-    [class^="Markprompt"] *,
-    [class^="Markprompt"] *::before,
-    [class^="Markprompt"] *::after
+    [class^='Markprompt'] *,
+    [class^='Markprompt'] *::before,
+    [class^='Markprompt'] *::after
   ) {
   box-sizing: inherit;
 }
@@ -246,13 +247,13 @@ body {
   color: var(--markprompt-mutedForeground);
 }
 
-:where(.MarkpromptTab[data-state="active"]) {
+:where(.MarkpromptTab[data-state='active']) {
   border-top: 2px solid transparent;
   border-bottom: 2px solid var(--markprompt-primary);
   color: var(--markprompt-primary);
 }
 
-:where(.MarkpromptTab):not([data-state="active"]) {
+:where(.MarkpromptTab):not([data-state='active']) {
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
 }
@@ -367,11 +368,11 @@ body {
 }
 
 :where(.MarkpromptChatConversationList button:hover),
-:where(.MarkpromptChatConversationList [data-selected="true"] button) {
+:where(.MarkpromptChatConversationList [data-selected='true'] button) {
   background-color: var(--markprompt-muted);
 }
 
-:where(.MarkpromptChatConversationList [data-selected="true"] button) {
+:where(.MarkpromptChatConversationList [data-selected='true'] button) {
   border-color: var(--markprompt-border);
 }
 
@@ -539,27 +540,27 @@ body {
 }
 
 /* Remove 2px padding that some browsers add to input */
-:where(.MarkpromptPrompt[type="search" i]) {
+:where(.MarkpromptPrompt[type='search' i]) {
   padding: 1rem 3rem 1rem 0;
 }
 
 /* Remove the 'x' clear button from the search :where(.MarkpromptPrompt field */
-.MarkpromptPrompt[type="search"]::-ms-clear {
+.MarkpromptPrompt[type='search']::-ms-clear {
   display: none;
   width: 0;
   height: 0;
 }
 
-.MarkpromptPrompt[type="search"]::-ms-reveal {
+.MarkpromptPrompt[type='search']::-ms-reveal {
   display: none;
   width: 0;
   height: 0;
 }
 
-.MarkpromptPrompt[type="search"]::-webkit-search-decoration,
-.MarkpromptPrompt[type="search"]::-webkit-search-cancel-button,
-.MarkpromptPrompt[type="search"]::-webkit-search-results-button,
-.MarkpromptPrompt[type="search"]::-webkit-search-results-decoration {
+.MarkpromptPrompt[type='search']::-webkit-search-decoration,
+.MarkpromptPrompt[type='search']::-webkit-search-cancel-button,
+.MarkpromptPrompt[type='search']::-webkit-search-results-button,
+.MarkpromptPrompt[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
@@ -637,39 +638,39 @@ body {
   padding-left: 1.5714286em;
 }
 
-:where(.MarkpromptAnswer ol[type="A"]) {
+:where(.MarkpromptAnswer ol[type='A']) {
   list-style-type: upper-alpha;
 }
 
-:where(.MarkpromptAnswer ol[type="a"]) {
+:where(.MarkpromptAnswer ol[type='a']) {
   list-style-type: lower-alpha;
 }
 
-:where(.MarkpromptAnswer ol[type="A" s]) {
+:where(.MarkpromptAnswer ol[type='A' s]) {
   list-style-type: upper-alpha;
 }
 
-:where(.MarkpromptAnswer ol[type="a" s]) {
+:where(.MarkpromptAnswer ol[type='a' s]) {
   list-style-type: lower-alpha;
 }
 
-:where(.MarkpromptAnswer ol[type="I"]) {
+:where(.MarkpromptAnswer ol[type='I']) {
   list-style-type: upper-roman;
 }
 
-:where(.MarkpromptAnswer ol[type="i"]) {
+:where(.MarkpromptAnswer ol[type='i']) {
   list-style-type: lower-roman;
 }
 
-:where(.MarkpromptAnswer ol[type="I" s]) {
+:where(.MarkpromptAnswer ol[type='I' s]) {
   list-style-type: upper-roman;
 }
 
-:where(.MarkpromptAnswer ol[type="i" s]) {
+:where(.MarkpromptAnswer ol[type='i' s]) {
   list-style-type: lower-roman;
 }
 
-:where(.MarkpromptAnswer ol[type="1"]) {
+:where(.MarkpromptAnswer ol[type='1']) {
   list-style-type: decimal;
 }
 
@@ -702,7 +703,7 @@ body {
   color: var(--markprompt-foreground);
   border-left-width: 0.25rem;
   border-left-color: var(--markprompt-border);
-  quotes: "\201C" "\201D" "\2018" "\2019";
+  quotes: '\201C' '\201D' '\2018' '\2019';
   margin-top: 1.3333333em;
   margin-bottom: 1.3333333em;
   padding-left: 1.1111111em;
@@ -795,11 +796,11 @@ body {
 }
 
 :where(.MarkpromptAnswer code::before) {
-  content: "`";
+  content: '`';
 }
 
 :where(.MarkpromptAnswer code::after) {
-  content: "`";
+  content: '`';
 }
 
 :where(.MarkpromptAnswer a code) {
@@ -1023,23 +1024,23 @@ body {
   transition-timing-function: cubic-bezier(0.14, 0, 0.16, 1);
 }
 
-:where([data-loading-state="preload"] .MarkpromptCaret) {
+:where([data-loading-state='preload'] .MarkpromptCaret) {
   display: inline-block;
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="text"]) {
+:where(.MarkpromptPromptFeedback[data-variant='text']) {
   margin: 0 2rem 1rem;
   padding: 0.75rem 0;
   border-top: 1px solid var(--markprompt-border);
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="icons"]) {
+:where(.MarkpromptPromptFeedback[data-variant='icons']) {
   padding: 0.75rem 0;
   margin-right: 1rem;
   align-self: last baseline;
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="text"] h3) {
+:where(.MarkpromptPromptFeedback[data-variant='text'] h3) {
   animation: markprompt-fade-in 500ms ease-out forwards 1;
   font-size: var(--markprompt-text-size-xs);
   font-weight: 600;
@@ -1048,7 +1049,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="icons"] h3) {
+:where(.MarkpromptPromptFeedback[data-variant='icons'] h3) {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
@@ -1078,21 +1079,21 @@ body {
   background-color: transparent;
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="icons"] button) {
+:where(.MarkpromptPromptFeedback[data-variant='icons'] button) {
   border: 0;
 }
 
-:where(.MarkpromptPromptFeedback[data-variant="text"] button) {
+:where(.MarkpromptPromptFeedback[data-variant='text'] button) {
   border: 1px solid var(--markprompt-border);
 }
 
-:where(.MarkpromptPromptFeedback button[data-active="true"]) {
+:where(.MarkpromptPromptFeedback button[data-active='true']) {
   background-color: var(--markprompt-primary);
   color: var(--markprompt-primaryForeground);
   border-color: var(--markprompt-primaryForeground);
 }
 
-.MarkpromptPromptFeedback button[data-active="true"]:hover {
+.MarkpromptPromptFeedback button[data-active='true']:hover {
   background-color: var(--markprompt-primary);
 }
 
@@ -1120,8 +1121,8 @@ body {
   opacity: 0;
 }
 
-:where(.MarkpromptProgress[data-loading-state="preload"]),
-:where(.MarkpromptProgress[data-loading-state="streaming-answer"]) {
+:where(.MarkpromptProgress[data-loading-state='preload']),
+:where(.MarkpromptProgress[data-loading-state='streaming-answer']) {
   opacity: 1;
 }
 
@@ -1145,7 +1146,7 @@ body {
   transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-:where(.MarkpromptReferences[data-loading-state="cancelled"]) {
+:where(.MarkpromptReferences[data-loading-state='cancelled']) {
   display: none;
 }
 
@@ -1160,7 +1161,7 @@ body {
   margin-top: 0;
 }
 
-:where(.MarkpromptReferences[data-loading-state="preload"]) {
+:where(.MarkpromptReferences[data-loading-state='preload']) {
   overflow-x: hidden;
 }
 
@@ -1209,7 +1210,7 @@ body {
 
 .MarkpromptReferences::before,
 .MarkpromptReferences::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 3px;
   bottom: 0;
@@ -1414,7 +1415,7 @@ body {
   background-color: var(--markprompt-muted);
 }
 
-:where([aria-selected="true"] .MarkpromptSearchResultLink) {
+:where([aria-selected='true'] .MarkpromptSearchResultLink) {
   background-color: var(--markprompt-primary);
   color: var(--markprompt-primaryForeground);
 }
@@ -1443,7 +1444,7 @@ body {
   border-color: var(--markprompt-border);
 }
 
-:where([aria-selected="true"] .MarkpromptSearchResultIconWrapperBordered) {
+:where([aria-selected='true'] .MarkpromptSearchResultIconWrapperBordered) {
   background-color: transparent;
   border-color: var(--markprompt-primaryMuted);
 }
@@ -1455,7 +1456,7 @@ body {
   height: var(--markprompt-button-icon-size);
 }
 
-:where([aria-selected="true"] .MarkpromptSearchResultIcon) {
+:where([aria-selected='true'] .MarkpromptSearchResultIcon) {
   color: var(--markprompt-primaryForeground);
 }
 
@@ -1484,7 +1485,7 @@ body {
   margin-bottom: 0.25rem;
 }
 
-:where([aria-selected="true"] .MarkpromptSearchResultHeading) {
+:where([aria-selected='true'] .MarkpromptSearchResultHeading) {
   background-color: var(--markprompt-primaryMuted);
   border-color: var(--markprompt-primaryMuted);
 }
@@ -1506,7 +1507,7 @@ body {
   color: var(--markprompt-mutedForeground);
 }
 
-:where([aria-selected="true"] .MarkpromptSearchResultSubtitle) {
+:where([aria-selected='true'] .MarkpromptSearchResultSubtitle) {
   color: var(--markprompt-primaryForeground);
 }
 
@@ -1516,12 +1517,12 @@ body {
   border-bottom: 0.1rem solid var(--markprompt-primary);
 }
 
-[aria-selected="true"] .MarkpromptSearchResultHeading .MarkpromptMatch,
+[aria-selected='true'] .MarkpromptSearchResultHeading .MarkpromptMatch,
 :where(.MarkpromptSearchResultHeading .MarkpromptMatch) {
   border-bottom-color: transparent;
 }
 
-:where([aria-selected="true"] .MarkpromptMatch) {
+:where([aria-selected='true'] .MarkpromptMatch) {
   border-color: var(--markprompt-primaryForeground);
   color: var(--markprompt-primaryForeground);
 }
@@ -1597,7 +1598,7 @@ body {
   max-width: 30ch;
 }
 
-:where(.MarkpromptSelectMenu[data-open="true"]) {
+:where(.MarkpromptSelectMenu[data-open='true']) {
   display: block;
 }
 
@@ -1612,11 +1613,11 @@ body {
   width: 100%;
 }
 
-:where(.MarkpromptSelectMenu li[data-highlighted="true"]) {
+:where(.MarkpromptSelectMenu li[data-highlighted='true']) {
   background-color: var(--markprompt-muted);
 }
 
-:where(.MarkpromptSelectMenu li[data-selected="true"]) {
+:where(.MarkpromptSelectMenu li[data-selected='true']) {
   font-weight: 600;
 }
 

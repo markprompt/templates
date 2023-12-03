@@ -5,29 +5,27 @@ import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/Button';
+import { Navbar } from '@/components/ui/Navbar';
+import { companyData } from '@/lib/constants';
 import { processCorporatePlanActivation } from '@/lib/functions/corporate';
 import { processClassCreditInquiry } from '@/lib/functions/credits';
 import { processReferralVerification } from '@/lib/functions/referral';
 import { processRefund } from '@/lib/functions/refund';
 import { Markprompt } from '@/lib/react';
 import { timeout } from '@/lib/utils';
-import { companyData } from '@/lib/constants';
+
+import { Button } from '../components/ui/Button';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const SelectItem = forwardRef(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ({ children, className, ...props }: any, forwardedRef) => {
+  ({ children, ...props }: any, forwardedRef) => {
     return (
-      <Select.Item
-        className={`text-sm flex flex-row gap-2 items-center pl-8 pr-2 py-2 outline-none hover:bg-neutral-100 cursor-pointer ${className}`}
-        {...props}
-        ref={forwardedRef}
-      >
+      <Select.Item className="SelectItem" {...props} ref={forwardedRef}>
         <Select.ItemText>{children}</Select.ItemText>
         <Select.ItemIndicator className="absolute left-2 w-8 items-center justify-center">
           <Check className="w-4 h-4 text-blue-500" />
@@ -86,7 +84,7 @@ const defaultData: Data = {
     firstName: 'Alexa',
     lastName: 'Kendricks',
     username: 'alexakendricks',
-    email: 'alexa.kendricks@acme.com',
+    email: 'alexa.kendricks@globex.com',
     accountType: 'Accelerate',
     avatarUrl: '/avatar.png',
   },
@@ -96,6 +94,7 @@ export default function Home() {
   const router = useRouter();
   const [data, setData] = useState<Data | undefined>();
   const [isSaving, setSaving] = useState(false);
+  const [showLogs, setShowLogs] = useState(true);
 
   useEffect(() => {
     try {
@@ -133,7 +132,10 @@ export default function Home() {
     localStorage.removeItem('markprompt-zendesk-store');
     localStorage.removeItem('markprompt-demo-data');
     setData(defaultData);
-    router.reload();
+    toast.success('Data has been reset');
+    setTimeout(() => {
+      router.reload();
+    }, 2000);
   }, [router]);
 
   if (!data) {
@@ -271,34 +273,12 @@ Only use functions and function parameters you have been provided with.`,
         showBranding={false}
       />
 
-      <div className="px-4 py-4 w-full shadow-lg bg-white flex flex-row gap-4 items-center flex-none z-10">
-        <div className="flex-grow">
-          <img
-            src={`/logos/${companyData.id}/logo.svg`}
-            alt="Company Logo"
-            className="dark:invert"
-            width={120}
-            height={32}
-          />
-        </div>
-        <div>
-          <div
-            className="rounded-full overflow-hidden"
-            onClick={() => {
-              clearData();
-            }}
-          >
-            <Image
-              src="/avatar.png"
-              alt="Alexa Kendricks"
-              width={32}
-              height={32}
-              priority
-            />
-          </div>
-        </div>
-        <ChevronDown className="text-black w-5 h-5 flex-none" />
-      </div>
+      <Navbar
+        showLogs={showLogs}
+        setShowLogs={setShowLogs}
+        clearData={clearData}
+        className="sticky"
+      />
       <div className="grid grid-cols-3 flex-grow w-full pr-48">
         <div className="h-full bg-neutral-50 p-4">
           <div className="grid grid-cols-2 gap-4">

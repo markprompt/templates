@@ -30,7 +30,9 @@
   overflow: hidden;
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  box-shadow:
+    0px 10px 38px -10px rgba(22, 23, 24, 0.35),
+    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
 }
 
 .SelectViewport {
@@ -38,21 +40,14 @@
 }
 
 .SelectItem {
-  font-size: 13px;
-  line-height: 1;
-  color: var(--violet-11);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  height: 25px;
-  padding: 0 35px 0 25px;
-  position: relative;
-  user-select: none;
+  @apply text-sm flex flex-row gap-2 items-center pl-8 pr-2 py-2 outline-none hover:bg-neutral-100 cursor-pointer !important;
 }
+
 .SelectItem[data-disabled] {
   color: var(--mauve-8);
   pointer-events: none;
 }
+
 .SelectItem[data-highlighted] {
   outline: none;
   background-color: var(--violet-9);
