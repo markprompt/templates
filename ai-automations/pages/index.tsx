@@ -147,7 +147,7 @@ export default function Home() {
       className={`relative flex min-h-screen flex-col items-center justify-between ${inter.className}`}
     >
       <Head>
-        <title>{`${companyData.name} | Settings`}</title>
+        <title>Settings</title>
         <meta charSet="utf-8" />
       </Head>
 
