@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ChatMessage, submitChatGenerator } from '@markprompt/core';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Flame, MoreHorizontal, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -10,8 +11,7 @@ import remarkGfm from 'remark-gfm';
 
 import { Button } from '@/components/ui/Button';
 import { TicketForm } from '@/components/ui/TicketForm';
-import { ChatMessage, submitChatGenerator } from '@/lib/chat';
-import { CATEGORIES } from '@/lib/constants';
+import { CATEGORIES, DEFAULT_SUBMIT_CHAT_OPTIONS } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +23,7 @@ type State = {
   generatingTicketInfo?: boolean;
   references?: any[];
   ticketInfo?: {
-    product: 'platform' | 'v0';
+    product: 'platform' | 'mobile-app';
     problemArea: string;
     subject: string;
     description: string;
@@ -49,7 +49,7 @@ export default function Home() {
         messages.push({
           role: 'user',
           content:
-            'IMPORTANT: Acme is currently ongoing a major outage of the cron service. If there are any questions related to cron jobs, respond by saying that the issue has been detected and an investigation is ongoing.',
+            'IMPORTANT: Markprompt is currently ongoing a major outage of the API service. If there are any questions related to APIs, respond by saying that the issue has been detected and an investigation is ongoing.',
         });
       }
 
@@ -61,6 +61,7 @@ export default function Home() {
       for await (const value of submitChatGenerator(
         messages,
         process.env.NEXT_PUBLIC_PROJECT_KEY!,
+        DEFAULT_SUBMIT_CHAT_OPTIONS,
       )) {
         if (value.content) {
           window.scrollTo({
@@ -122,7 +123,7 @@ export default function Home() {
       process.env.NEXT_PUBLIC_PROJECT_KEY!,
       {
         systemPrompt:
-          'You are an expert technical support engineer from Acme who loves to help people.',
+          'You are an expert technical support engineer from Markprompt who loves to help people.',
         doNotInjectContext: true,
         excludeFromInsights: true,
       },
@@ -147,7 +148,7 @@ export default function Home() {
       process.env.NEXT_PUBLIC_PROJECT_KEY!,
       {
         systemPrompt:
-          'You are an expert technical support engineer from Acme who loves to help people.',
+          'You are an expert technical support engineer from Markprompt who loves to help people.',
         doNotInjectContext: true,
         excludeFromInsights: true,
       },
@@ -177,7 +178,7 @@ export default function Home() {
       process.env.NEXT_PUBLIC_PROJECT_KEY!,
       {
         systemPrompt:
-          'You are an expert technical support engineer from Acme who loves to help people.',
+          'You are an expert technical support engineer from Markprompt who loves to help people.',
         doNotInjectContext: true,
         excludeFromInsights: true,
       },
@@ -191,7 +192,9 @@ export default function Home() {
       ...s,
       generatingTicketInfo: false,
       ticketInfo: {
-        product: state.currentMessage?.includes('v0') ? 'v0' : 'platform',
+        product: state.currentMessage?.includes('mobile app')
+          ? 'mobile-app'
+          : 'platform',
         problemArea: category || '',
         subject: subject || '',
         description: `${improvedMessage}\n\n-------------------\n\nOriginal message:\n\n${
