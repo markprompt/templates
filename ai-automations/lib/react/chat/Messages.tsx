@@ -2,14 +2,13 @@ import { Check } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment, type ReactElement, useRef, useMemo } from 'react';
 
-import { loggedToast } from '@/lib/toast';
-
 import { MessageAnswer } from './MessageAnswer';
 import { MessagePrompt } from './MessagePrompt';
 import { Reference } from './References';
 import { ChatViewMessage, useChatStore } from './store';
 import { Message, useZendeskStore } from './zendesk';
 import { FunctionCall, PromptFeedback } from '../../../lib/core';
+import { loggedToast } from '../../toast';
 import { Feedback } from '../feedback/Feedback';
 import { useFeedback } from '../feedback/useFeedback';
 import * as BaseMarkprompt from '../primitives/headless';

@@ -5,7 +5,7 @@ import {
   submitChatGenerator,
 } from '@markprompt/core';
 
-import { loggedToast } from '@/lib/toast';
+import { loggedToast } from '../lib/toast';
 
 export const getWeatherInCity = async ({
   city,

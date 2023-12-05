@@ -7,13 +7,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 
-import { loggedToast } from '@/lib/toast';
-
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/ui/Navbar';
 import { functions } from '../functions/definitions';
 import { companyData, defaultData } from '../lib/constants';
 import { Markprompt } from '../lib/react';
+import { loggedToast } from '../lib/toast';
 import { Data } from '../lib/types';
 import { timeout } from '../lib/utils';
 
