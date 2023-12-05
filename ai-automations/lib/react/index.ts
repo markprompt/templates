@@ -39,12 +39,6 @@ export {
 } from './feedback/useFeedback';
 
 export {
-  usePrompt,
-  type UsePromptOptions,
-  type UsePromptResult,
-} from './prompt/usePrompt';
-
-export {
   useSearch,
   type SearchLoadingState,
   type UseSearchOptions,
@@ -67,7 +61,6 @@ export {
   type ChatViewMessage,
   type ChatLoadingState,
 } from './chat/store';
-export { PromptView, type PromptViewProps } from './prompt/PromptView';
 export { SearchView, type SearchViewProps } from './search/SearchView';
 
 export { DEFAULT_MARKPROMPT_OPTIONS } from './constants';

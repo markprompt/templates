@@ -10,7 +10,6 @@ import { ChatView } from './chat/ChatView';
 import { DEFAULT_MARKPROMPT_OPTIONS } from './constants';
 import { SparklesIcon } from './icons';
 import * as BaseMarkprompt from './primitives/headless';
-import { PromptView } from './prompt/PromptView';
 import { SearchView } from './search/SearchView';
 import { type MarkpromptOptions } from './types';
 import { useDefaults } from './useDefaults';
@@ -239,27 +238,15 @@ function MarkpromptContent(props: MarkpromptContentProps): ReactElement {
               inset: 0,
             }}
           >
-            {chat?.enabled ? (
-              <ChatView
-                activeView={activeView}
-                chatOptions={chat}
-                debug={debug}
-                feedbackOptions={feedback}
-                onDidSelectReference={() => emitter.emit('close')}
-                projectKey={projectKey}
-                referencesOptions={references}
-              />
-            ) : (
-              <PromptView
-                activeView={activeView}
-                debug={debug}
-                feedbackOptions={feedback}
-                onDidSelectReference={() => emitter.emit('close')}
-                projectKey={projectKey}
-                promptOptions={prompt}
-                referencesOptions={references}
-              />
-            )}
+            <ChatView
+              activeView={activeView}
+              chatOptions={chat}
+              debug={debug}
+              feedbackOptions={feedback}
+              onDidSelectReference={() => emitter.emit('close')}
+              projectKey={projectKey}
+              referencesOptions={references}
+            />
           </div>
         </div>
       </div>
@@ -354,43 +341,23 @@ function MarkpromptContent(props: MarkpromptContentProps): ReactElement {
           />
         </Tabs.Content>
 
-        {chat?.enabled ? (
-          <Tabs.Content
-            value="chat"
-            style={{
-              position: 'absolute',
-              inset: 0,
-            }}
-          >
-            <ChatView
-              activeView={activeView}
-              chatOptions={chat}
-              debug={debug}
-              feedbackOptions={feedback}
-              onDidSelectReference={() => emitter.emit('close')}
-              projectKey={projectKey}
-              referencesOptions={references}
-            />
-          </Tabs.Content>
-        ) : (
-          <Tabs.Content
-            value="prompt"
-            style={{
-              position: 'absolute',
-              inset: 0,
-            }}
-          >
-            <PromptView
-              activeView={activeView}
-              debug={debug}
-              feedbackOptions={feedback}
-              onDidSelectReference={() => emitter.emit('close')}
-              projectKey={projectKey}
-              promptOptions={prompt}
-              referencesOptions={references}
-            />
-          </Tabs.Content>
-        )}
+        <Tabs.Content
+          value="chat"
+          style={{
+            position: 'absolute',
+            inset: 0,
+          }}
+        >
+          <ChatView
+            activeView={activeView}
+            chatOptions={chat}
+            debug={debug}
+            feedbackOptions={feedback}
+            onDidSelectReference={() => emitter.emit('close')}
+            projectKey={projectKey}
+            referencesOptions={references}
+          />
+        </Tabs.Content>
       </div>
     </Tabs.Root>
   );

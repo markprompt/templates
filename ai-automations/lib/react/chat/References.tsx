@@ -1,10 +1,15 @@
-import React, { useCallback, useMemo, type ReactElement } from 'react';
+import { useCallback, useMemo, type ReactElement } from 'react';
 
 import type { FileSectionReference } from '@/lib/core';
 
-import type { PromptLoadingState } from './usePrompt';
 import { DEFAULT_MARKPROMPT_OPTIONS } from '../constants';
 import * as Markprompt from '../primitives/headless';
+
+export type PromptLoadingState =
+  | 'indeterminate'
+  | 'preload'
+  | 'streaming-answer'
+  | 'done';
 
 interface ReferenceProps {
   getHref?: (reference: FileSectionReference) => string | undefined;

@@ -1,18 +1,17 @@
 import { Check } from 'lucide-react';
 import Image from 'next/image';
-import React, { Fragment, type ReactElement, useRef, useMemo } from 'react';
+import { Fragment, type ReactElement, useRef, useMemo } from 'react';
 import { toast } from 'sonner';
-
-import { FunctionCall, PromptFeedback } from '@/lib/core';
 
 import { MessageAnswer } from './MessageAnswer';
 import { MessagePrompt } from './MessagePrompt';
+import { Reference } from './References';
 import { ChatViewMessage, useChatStore } from './store';
 import { Message, useZendeskStore } from './zendesk';
+import { FunctionCall, PromptFeedback } from '../../../lib/core';
 import { Feedback } from '../feedback/Feedback';
 import { useFeedback } from '../feedback/useFeedback';
 import * as BaseMarkprompt from '../primitives/headless';
-import { Reference } from '../prompt/References';
 import type {
   FunctionDefinitionWithFunction,
   MarkpromptOptions,

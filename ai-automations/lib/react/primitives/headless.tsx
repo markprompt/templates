@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import React, {
+import {
   forwardRef,
   useEffect,
   useRef,
@@ -220,9 +220,7 @@ const Prompt = forwardRef<HTMLTextAreaElement, PromptProps>(
       labelClassName,
       placeholder,
       spellCheck = false,
-      // type = 'search',
       name,
-      ...rest
     } = props;
 
     return (

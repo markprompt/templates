@@ -55,7 +55,8 @@ export function SearchView(props: SearchViewProps): ReactElement {
     DEFAULT_MARKPROMPT_OPTIONS.search,
   );
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const inputRef = useRef<any | null>(null);
 
   const {
     abort,
