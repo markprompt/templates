@@ -345,7 +345,7 @@ export default function Home() {
                   </Button>
                   {state.generatingTicketInfo && (
                     <span className="text-sm text-neutral-500 animate-pulse">
-                      Generating ticket info...
+                      Generating case info...
                     </span>
                   )}
                 </div>

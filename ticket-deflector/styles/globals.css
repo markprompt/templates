@@ -5,7 +5,7 @@
 @import 'ui.css';
 @import 'dom.css';
 @import 'dropdown.css';
-@import 'select.css';
+/* @import 'select.css'; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -24,7 +24,6 @@
 body {
   @apply bg-white antialiased;
 }
-
 
 .loading-dots {
   @apply inline-flex items-center text-center leading-7;

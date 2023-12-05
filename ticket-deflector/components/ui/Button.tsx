@@ -103,7 +103,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className,
           'outline-none relative flex select-none flex-row items-center whitespace-nowrap disabled:cursor-not-allowed rounded-md font-medium transition',
           {
-            'border border-transparent bg-black text-white hover:bg-black/70 disabled:bg-neutral-300':
+            'border border-transparent bg-black text-white hover:bg-black/70 disabled:bg-neutral-200':
               variant === 'cta',
             'border border-neutral-200 text-neutral-900 hover:bg-neutral-100 disabled:border-transparent disabled:text-neutral-500':
               variant === 'plain',
