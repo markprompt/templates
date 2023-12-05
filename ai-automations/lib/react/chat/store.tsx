@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useEffect,
@@ -211,7 +211,6 @@ export const createChatStore = ({
               (f) => f.name === functionCall.name,
             );
             if (!fn) return;
-            // console.log(functionCall);
             const response = await fn.actual(functionCall.arguments);
             get().submitChat(response, 'function', functionCall.name);
           },
@@ -290,8 +289,6 @@ export const createChatStore = ({
                 get().setMessageByIndex(currentMessageIndex, {
                   state: 'streaming-answer',
                 });
-
-                // console.log(value);
 
                 get().setMessageByIndex(currentMessageIndex + 1, value);
               }

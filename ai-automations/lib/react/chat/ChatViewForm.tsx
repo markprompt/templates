@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import defaults from 'defaults';
-import { MessagesSquare } from 'lucide-react';
 import {
   useCallback,
   useContext,
@@ -8,21 +8,14 @@ import {
   useState,
   type FormEventHandler,
   type ReactElement,
+  KeyboardEvent,
 } from 'react';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
-import { DEFAULT_SUBMIT_CHAT_OPTIONS, submitChatGenerator } from '@/lib/core';
+import { DEFAULT_SUBMIT_CHAT_OPTIONS } from '@/lib/core';
 
 import { ConversationSelect } from './ConversationSelect';
 import { ChatContext, selectProjectConversations, useChatStore } from './store';
-import {
-  Conversation,
-  Message,
-  createConversation,
-  listMessages,
-  postMessage,
-  useZendeskStore,
-} from './zendesk';
-import * as BaseMarkprompt from '../primitives/headless';
 import type { MarkpromptOptions } from '../types';
 import type { View } from '../useViews';
 
@@ -74,68 +67,18 @@ async function triage(
 
 export function ChatViewForm(props: ChatViewFormProps): ReactElement {
   const { activeView, chatOptions } = props;
-
   const [prompt, setPrompt] = useState('');
-  const [disabled, setDisabled] = useState(false);
-  const [state, setState] = useState<{
-    loading: boolean;
-    message?: string;
-  }>({ loading: false });
-
-  const projectKey = useChatStore((state) => state.projectKey);
-  const options = useChatStore((state) => state.options);
   const submitChat = useChatStore((state) => state.submitChat);
-  const messages = useChatStore((state) => state.messages);
-  const setMessages = useZendeskStore(
-    (state) => (messages: Message[]) => state.setState({ messages }),
-  );
-  const zendeskEnabled = useZendeskStore((state) => state.enabled);
-  const setZendeskEnabled = useZendeskStore(
-    (state) => (enabled: boolean) => state.setState({ enabled }),
-  );
-
-  const user = useZendeskStore((state) => state.user);
   const conversations = useChatStore(selectProjectConversations);
-  const conversation = useZendeskStore((state) => state.conversation);
-  const setConversation = useZendeskStore(
-    (state) => (conversation: Conversation) => state.setState({ conversation }),
-  );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     async (event) => {
       event.preventDefault();
 
-      const data = new FormData(event.currentTarget);
-      const value = data.get('markprompt-prompt');
-
-      if (!zendeskEnabled) {
-        if (typeof value === 'string') {
-          submitChat(value);
-        }
-      }
-
-      if (zendeskEnabled) {
-        await postMessage(conversation!.id, {
-          body: JSON.stringify({
-            author: {
-              type: 'user',
-              userExternalId: user?.externalId,
-            },
-            content: {
-              type: 'text',
-              text: value,
-            },
-          }),
-        });
-
-        // kick off a message fetch immediately to update the UI asap
-        const zendeskMessages = await listMessages(conversation!.id);
-        setMessages(zendeskMessages);
-      }
-
+      submitChat(prompt);
       setPrompt('');
     },
-    [conversation, setMessages, submitChat, user?.externalId, zendeskEnabled],
+    [prompt, submitChat],
   );
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -167,149 +110,39 @@ export function ChatViewForm(props: ChatViewFormProps): ReactElement {
     return () => abortChat.current?.();
   }, [activeView]);
 
-  const speakToAgent = useCallback(async () => {
-    if (zendeskEnabled) {
-      return setZendeskEnabled(false);
-    }
-
-    // enable Zendesk
-    setZendeskEnabled(true);
-
-    let localConversation = conversation;
-
-    setState({ loading: true, message: 'Connecting you with an agent...' });
-    // toast('Connecting you to an agent.');
-
-    setDisabled(true);
-
-    if (!localConversation) {
-      // create conversation
-      localConversation = await createConversation({
-        body: JSON.stringify({
-          type: 'personal',
-          participants: [{ userExternalId: user?.externalId }],
-        }),
-      });
-
-      setConversation(localConversation);
-
-      // If this is a new conversation, start by sending a summary.
-      let summary: string | null = '';
-      for await (const chunk of submitChatGenerator(
-        [
-          ...messages,
-          {
-            role: 'user',
-            content:
-              "Summarize this conversation. Provide the human agent with all info included in the conversation that could be relevant to resolve the user's issue.",
-          },
-        ],
-        projectKey,
-        {
-          ...options,
-          functions:
-            options?.functions?.map(
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              ({ actual, ...definition }) => definition,
-            ) ?? [],
-        },
-      )) {
-        summary = chunk.content;
+  const onEnterPress = useCallback(
+    (e: KeyboardEvent<any>) => {
+      if (e.keyCode == 13 && e.shiftKey == false) {
+        e.preventDefault();
+        handleSubmit(e);
       }
-
-      // todo: create the summary as an internal note for the agent rather than a message.
-      // would need to figure out how to get the correct ticket id using the data we have
-      // https://developer.zendesk.com/api-reference/ticketing/tickets/ticket_comments/#json-format
-      // set public: false in the ticket comment request to create internal notes
-
-      if (!localConversation?.id) {
-        return;
-      }
-
-      await postMessage(localConversation.id, {
-        body: JSON.stringify({
-          author: {
-            type: 'user',
-            userExternalId: user?.externalId,
-          },
-          content: {
-            type: 'text',
-            text: `Summary: ${summary}`,
-          },
-          metadata: {
-            isSummary: true,
-          },
-        }),
-      });
-    }
-
-    const zendeskMessages = await listMessages(localConversation.id);
-    setMessages(zendeskMessages);
-
-    setState({ loading: false });
-    // toast('You’re now connected to an agent. How can we help?');
-
-    setDisabled(false);
-    inputRef.current?.focus();
-  }, [
-    conversation,
-    messages,
-    options,
-    projectKey,
-    setConversation,
-    setMessages,
-    setZendeskEnabled,
-    user?.externalId,
-    zendeskEnabled,
-  ]);
+    },
+    [handleSubmit],
+  );
 
   return (
     <div className="flex flex-col gap-2 relative">
       <div className="absolute w-full h-16 bg-gradient-to-t from-white to-white/0 -top-16 z-10" />
-      <BaseMarkprompt.Form className="MarkpromptForm" onSubmit={handleSubmit}>
-        <BaseMarkprompt.Prompt
-          ref={inputRef}
-          className="MarkpromptPrompt"
-          name="markprompt-prompt"
-          type="text"
+      <form className="MarkpromptForm px-4" onSubmit={handleSubmit}>
+        <ReactTextareaAutosize
+          maxRows={5}
+          onKeyDown={onEnterPress}
+          className="base-input resize-none w-full outline-none border rounded-md border-neutral-200 p-2"
+          placeholder={chatOptions?.placeholder}
           autoFocus
-          placeholder={
-            zendeskEnabled ? 'Send message...' : chatOptions?.placeholder
-          }
-          labelClassName="MarkpromptPromptLabel"
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
-          disabled={disabled}
         />
-        <div className="MarkpromptChatActions z-10">
-          <button
-            type="button"
-            onClick={speakToAgent}
-            className="text-neutral-800 font-medium bg-neutral-100 rounded-full px-4 py-1 text-sm flex flex-row gap-2 items-center"
-          >
-            {zendeskEnabled ? (
-              <div
-                className={
-                  'w-2.5 h-2.5 rounded-full animate-pulse ' +
-                  (state.loading ? 'bg-orange-500' : 'bg-green-500')
-                }
-              />
-            ) : (
-              <MessagesSquare className="w-4 h-4" />
-            )}
-
-            {state.loading ? (
-              <>{state.message ?? 'Loading'}</>
-            ) : (
-              <>
-                {zendeskEnabled ? 'Live chat' : 'Speak to an agent'}
-                {zendeskEnabled && <span className="text-blue-500">Leave</span>}
-              </>
-            )}
-          </button>
+        <button
+          className="py-2 base-button bg-neutral-100 border border-neutral-200 px-3 font-medium text-sm text-neutral-900 rounded-md"
+          type="submit"
+        >
+          Send
+        </button>
+        <div className="MarkpromptChatActions z-10 mr-4 mt-3">
           {conversations.length > 0 && <ConversationSelect />}
         </div>
-      </BaseMarkprompt.Form>
+      </form>
     </div>
   );
 }

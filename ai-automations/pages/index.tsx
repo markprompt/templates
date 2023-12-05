@@ -8,16 +8,13 @@ import { useRouter } from 'next/router';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Navbar } from '@/components/ui/Navbar';
-import { companyData } from '@/lib/constants';
-import { processCorporatePlanActivation } from '@/lib/functions/corporate';
-import { processClassCreditInquiry } from '@/lib/functions/credits';
-import { processReferralVerification } from '@/lib/functions/referral';
-import { processRefund } from '@/lib/functions/refund';
-import { Markprompt } from '@/lib/react';
-import { timeout } from '@/lib/utils';
-
 import { Button } from '../components/ui/Button';
+import { Navbar } from '../components/ui/Navbar';
+import { functions } from '../functions/definitions';
+import { companyData, defaultData } from '../lib/constants';
+import { Markprompt } from '../lib/react';
+import { Data } from '../lib/types';
+import { timeout } from '../lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -53,7 +50,7 @@ export const Field = ({
       <p className="text-neutral-500">{label}</p>
       <input
         type="text"
-        className="base-button p-2 border border-neutral-200 rounded"
+        className="base-input p-2 border border-neutral-200 rounded"
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
@@ -62,32 +59,6 @@ export const Field = ({
       />
     </div>
   );
-};
-
-export type UserInfo = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  accountType: string;
-  avatarUrl: string;
-};
-
-export type Data = {
-  user: UserInfo;
-};
-
-const defaultData: Data = {
-  user: {
-    id: 'alexakendricks',
-    firstName: 'Alexa',
-    lastName: 'Kendricks',
-    username: 'alexakendricks',
-    email: 'alexa.kendricks@globex.com',
-    accountType: 'Accelerate',
-    avatarUrl: '/avatar.png',
-  },
 };
 
 export default function Home() {
@@ -169,105 +140,7 @@ Some other important rules to strictly follow:
 - Never make up a fake email address.
 
 Only use functions and function parameters you have been provided with.`,
-          functions: [
-            {
-              actual: processRefund(data.user || defaultData.user),
-              name: 'processRefund',
-              description:
-                'Cancel auto-renewal and process a refund for a customer',
-              confirmationMessage: () => (
-                <>
-                  Please confirm that you want to cancel auto-renewal and
-                  proceed with a refund.
-                </>
-              ),
-              parameters: {
-                type: 'object',
-                properties: {
-                  userId: {
-                    type: 'string',
-                    description: 'The username or email address of the user',
-                  },
-                  billingCycleEnd: {
-                    type: 'string',
-                    description: 'The date the billing cycle ends',
-                  },
-                },
-                required: ['userId', 'billingCycleEnd'],
-              },
-            },
-            {
-              actual: processReferralVerification,
-              name: 'processReferralVerification',
-              description:
-                'Verify if a referral was successful and the user is eligible for a reward',
-              confirmationMessage: (args) => (
-                <>
-                  Just to make sure I got this right. You want to claim credits
-                  for the referral of{' '}
-                  <strong>{(args?.friendEmail as string) || ''}</strong>, is
-                  that correct?
-                </>
-              ),
-              parameters: {
-                type: 'object',
-                properties: {
-                  userEmail: {
-                    type: 'string',
-                    description: 'The username or email address of the user',
-                  },
-                  friendEmail: {
-                    type: 'string',
-                    description: 'The email of the referred friend',
-                  },
-                },
-                required: ['friendEmail', 'userId', 'referralCode'],
-              },
-            },
-            {
-              actual: processCorporatePlanActivation,
-              name: 'processCorporatePlanActivation',
-              description: `Activate a user account and assign a ${companyData.name} corporate plan to the account.`,
-              confirmationMessage: (args) => (
-                <>
-                  Do you want to activate your user account and assign a{' '}
-                  <strong>{(args?.corporateName as string) || ''}</strong>{' '}
-                  corporate plan to the account?
-                </>
-              ),
-              parameters: {
-                type: 'object',
-                properties: {
-                  userId: {
-                    type: 'string',
-                    description: 'The username or email address of the user',
-                  },
-                  corporateName: {
-                    type: 'string',
-                    description: 'The corporate name to which the plan belongs',
-                  },
-                },
-                required: ['userId', 'corporateName'],
-              },
-            },
-            {
-              actual: processClassCreditInquiry,
-              name: 'processClassCreditInquiry',
-              description: 'Retrieve the number of credits a class costs',
-              autoConfirm: true,
-              // confirmationMessage: (args) => <>Please confirm we got this right. You are looking for the number of credits for the class <strong>{args?.classId as string || ''}</strong>, is that correct?</>,
-              parameters: {
-                type: 'object',
-                properties: {
-                  className: {
-                    type: 'string',
-                    description: 'The name of the class',
-                  },
-                },
-                required: ['userId', 'classId'],
-              },
-            },
-          ],
+          functions: functions(data),
         }}
         references={{ display: 'end' }}
         showBranding={false}
@@ -283,7 +156,7 @@ Only use functions and function parameters you have been provided with.`,
         <div className="h-full bg-neutral-50 p-4">
           <div className="grid grid-cols-2 gap-4">
             <div />
-            <div className="pt-16 flex flex-col gap-6 text-[13px] font-medium">
+            <div className="pt-16 flex flex-col gap-6 text-[13px] font-medium text-neutral-600">
               <Image
                 className="rounded-full overflow-hidden border mb-8"
                 src="/avatar.png"
@@ -294,7 +167,9 @@ Only use functions and function parameters you have been provided with.`,
               />
 
               <p>Account</p>
-              <p className="text-blue-500">Personal Information</p>
+              <p className="text-black -ml-2 px-2 bg-neutral-100 rounded-md font-semibold py-2">
+                Personal Information
+              </p>
               <p>Contact</p>
               <p>Billing</p>
               <p>Recent charges</p>
@@ -382,7 +257,7 @@ Only use functions and function parameters you have been provided with.`,
           <div className="w-full h-px bg-neutral-200 col-span-2 mt-8" />
           <div className="flex items-start mt-8">
             <Button
-              className="relative px-4 py-3 rounded-md bg-blue-500 text-sm font-medium text-white text-center base-button"
+              className="relative px-4 py-3 rounded-md bg-black text-sm font-medium text-white text-center base-button"
               onClick={saveData}
               loading={isSaving}
               noStyle

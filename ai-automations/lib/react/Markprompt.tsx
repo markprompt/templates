@@ -4,7 +4,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import { clsx } from 'clsx';
 import Emittery from 'emittery';
 import { MessageCircle } from 'lucide-react';
-import { useEffect, useState, type ReactElement, useMemo } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 
 import { ChatView } from './chat/ChatView';
 import { DEFAULT_MARKPROMPT_OPTIONS } from './constants';
@@ -15,7 +15,7 @@ import { SearchView } from './search/SearchView';
 import { type MarkpromptOptions } from './types';
 import { useDefaults } from './useDefaults';
 import { useViews, type View } from './useViews';
-import { companyData } from '../constants';
+import { MarkpromptIcon } from '../../components/ui/Markprompt';
 
 type MarkpromptProps = MarkpromptOptions &
   Omit<
@@ -229,16 +229,9 @@ function MarkpromptContent(props: MarkpromptContentProps): ReactElement {
   if (!search?.enabled) {
     return (
       <div className="MarkpromptTabsContainer">
-        <div className="bg-blue-500 p-6">
-          <img
-            src={`/logos/${companyData.id}/icon-white.svg`}
-            alt={`${companyData.name} Logo`}
-            className="dark:invert h-6"
-          />
+        <div className="bg-black px-4 py-2">
+          <MarkpromptIcon className="w-9 h-9" />
         </div>
-        {/* We still include a div to preserve the grid-template-rows rules */}
-        {/* <div></div> */}
-
         <div className="MarkpromptViews">
           <div
             style={{

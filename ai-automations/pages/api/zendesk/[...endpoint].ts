@@ -20,11 +20,7 @@ async function zendesk(endpoint: string, init?: RequestInit) {
     ...init,
   });
 
-  const j = await res.json();
-  console.log('In here', JSON.stringify(j, null, 2));
-  return j;
-
-  // return res.json();
+  return res.json();
 }
 
 export default async function handler(
@@ -37,8 +33,6 @@ export default async function handler(
     method: req.method,
     ...(req.body ? { body: req.body } : {}),
   });
-
-  console.log('zendeskResponse', JSON.stringify(zendeskResponse, null, 2));
 
   if (zendeskResponse.errors) {
     return res.status(400).json(zendeskResponse);

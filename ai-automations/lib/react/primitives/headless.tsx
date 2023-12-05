@@ -12,6 +12,7 @@ import React, {
 } from 'react';
 import Markdown from 'react-markdown';
 import { mergeRefs } from 'react-merge-refs';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 import remarkGfm from 'remark-gfm';
 
 import type { FileSectionReference } from '@/lib/core';
@@ -208,7 +209,7 @@ type PromptProps = ComponentPropsWithRef<'input'> & {
 /**
  * The Markprompt input prompt. User input will update the prompt in the Markprompt context.
  */
-const Prompt = forwardRef<HTMLInputElement, PromptProps>(
+const Prompt = forwardRef<HTMLTextAreaElement, PromptProps>(
   function Prompt(props, ref) {
     const {
       autoCapitalize = 'none',
@@ -219,7 +220,7 @@ const Prompt = forwardRef<HTMLInputElement, PromptProps>(
       labelClassName,
       placeholder,
       spellCheck = false,
-      type = 'search',
+      // type = 'search',
       name,
       ...rest
     } = props;
@@ -229,10 +230,13 @@ const Prompt = forwardRef<HTMLInputElement, PromptProps>(
         <label htmlFor={name} className={labelClassName}>
           {label}
         </label>
-        <input
-          {...rest}
+        <ReactTextareaAutosize
+          maxRows={5}
+          defaultValue="Just a single line..."
+          // {...rest}
           id={name}
-          type={type}
+          className="resize-none w-full outline-none border rounded-md border-neutral-200 p-2"
+          // type={type}
           name={name}
           placeholder={placeholder}
           ref={ref}
@@ -242,6 +246,20 @@ const Prompt = forwardRef<HTMLInputElement, PromptProps>(
           autoFocus={autoFocus}
           spellCheck={spellCheck}
         />
+        {/* <textarea
+          {...rest}
+          id={name}
+          className="resize-none w-full outline-none border rounded-md border-neutral-200 p-2"
+          // type={type}
+          name={name}
+          placeholder={placeholder}
+          ref={ref}
+          autoCapitalize={autoCapitalize}
+          autoComplete={autoComplete}
+          autoCorrect={autoCorrect}
+          autoFocus={autoFocus}
+          spellCheck={spellCheck}
+        /> */}
       </>
     );
   },

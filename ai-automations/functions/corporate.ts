@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { timeout } from '../utils';
+import { timeout } from '../lib/utils';
 
 /**
  * An interface to represent corporate information.

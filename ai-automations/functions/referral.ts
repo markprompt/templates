@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { toast } from 'sonner';
 
-import { timeout } from '../utils';
+import { timeout } from '../lib/utils';
 
 /**
  * An interface to represent the referral information.

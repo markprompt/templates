@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { selectProjectConversations, useChatStore } from './store';
 import { CounterClockwiseClockIcon, PlusIcon } from '../icons';
 import { Select } from '../primitives/Select';
@@ -10,7 +8,7 @@ export function ConversationSelect(): JSX.Element {
 
   return (
     <Select
-      className="MarkpromptConversationSelect"
+      className="MarkpromptConversationSelect border border-neutral-200 rounded-full"
       label="Select previous conversation"
       toggle={
         <CounterClockwiseClockIcon

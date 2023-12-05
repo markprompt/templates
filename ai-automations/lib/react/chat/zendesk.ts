@@ -37,8 +37,6 @@ async function getUserById(externalId: string): Promise<User | ErrorResponse> {
     method: 'GET',
   });
 
-  console.log('getUserById', JSON.stringify(json, null, 2));
-
   if (json.errors) {
     return json;
   }

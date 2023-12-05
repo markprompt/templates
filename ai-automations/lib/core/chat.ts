@@ -371,6 +371,10 @@ export async function* submitChatGenerator(
         }
 
         returnValue.function_call = function_call as unknown as FunctionCall;
+        console.log(
+          'Function call detected:\n',
+          JSON.stringify(function_call, null, 2),
+        );
       }
 
       return;

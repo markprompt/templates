@@ -1,37 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { toast } from 'sonner';
 
-import { UserInfo } from '@/pages';
-
-import { timeout } from '../utils';
-
-/**
- * User information interface.
- * Define any other required properties for user information.
- */
-// interface UserInfo {
-//   id: string;
-//   firstName: string;
-//   email: string;
-//   username: string;
-//   accountType: "enterprise-platinum";
-// }
-
-/**
- * Retrieve user information from your Admin/CRM system.
- * @param {string} userId - The unique identifier of a user.
- * @returns {Promise<UserInfo | null>} - Promise object represents the user information or null if the user doesn't exist.
- */
-// async function getUserInfo(userId: string): Promise<UserInfo | null> {
-//   // Implementation logic to fetch user information goes here.
-//   return {
-//     id: userId,
-//     firstName: "Alexa",
-//     email: "alexa.kendricks@acme.com",
-//     username: "alexakendricks",
-//     accountType: "enterprise-platinum",
-//   };
-// }
+import { UserInfo } from '../lib/types';
+import { timeout } from '../lib/utils';
 
 /**
  * Check the user's eligibility for a refund using your decision tree available in the CX.

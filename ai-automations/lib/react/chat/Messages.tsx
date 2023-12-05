@@ -106,7 +106,6 @@ function MarkpromptMessage(props: MarkpromptMessageProps): ReactElement {
               const signature = `${props.message.content}:${props.index}`;
               if (!props.submittedCalls.current?.includes(signature)) {
                 // Sumbitting function call
-                console.debug('Auto-submitting call', signature);
                 props.submitFunctionCall(props.message.function_call!);
                 props.submittedCalls.current.push(signature);
               }
