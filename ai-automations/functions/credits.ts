@@ -1,4 +1,4 @@
-import { toast } from 'sonner';
+import { loggedToast } from '@/lib/toast';
 
 import { timeout } from '../lib/utils';
 
@@ -62,12 +62,12 @@ export async function processClassCreditInquiry({
 }: {
   className: string;
 }): Promise<string> {
-  toast.loading(`Retrieving class info for ${className}.`);
+  loggedToast.loading(`Retrieving class info for ${className}.`);
   const classInfo = await getClassInfo(className);
 
   // Move on to trigger OpenAI call, but also delay showing dialog.
   timeout(3000).then(() => {
-    toast.success(`Info for class ${className} retrieved.`);
+    loggedToast.success(`Info for class ${className} retrieved.`);
   });
 
   if (!classInfo) {

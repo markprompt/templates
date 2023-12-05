@@ -2,6 +2,7 @@ import { processCorporatePlanActivation } from './corporate';
 import { processClassCreditInquiry } from './credits';
 import { processReferralVerification } from './referral';
 import { processRefund } from './refund';
+import { getWeatherInCity } from './weather';
 import { defaultData } from '../lib/constants';
 import { FunctionDefinitionWithFunction } from '../lib/react';
 import { Data } from '../lib/types';
@@ -100,6 +101,22 @@ export const functions = (data: Data): FunctionDefinitionWithFunction[] => {
           },
         },
         required: ['userId', 'classId'],
+      },
+    },
+    {
+      actual: getWeatherInCity,
+      name: 'getWeatherInCity',
+      description: 'Retrieve the weather in a city',
+      autoConfirm: true,
+      parameters: {
+        type: 'object',
+        properties: {
+          city: {
+            type: 'string',
+            description: 'The city name',
+          },
+        },
+        required: ['city'],
       },
     },
   ];

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
 import { type ChatViewMessage } from './store';
 import type { MarkpromptOptions } from '../types';

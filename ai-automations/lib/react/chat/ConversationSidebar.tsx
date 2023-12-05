@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { selectProjectConversations, useChatStore } from './store';
 import { PlusIcon } from '../icons';
 import { markdownToString } from '../utils';

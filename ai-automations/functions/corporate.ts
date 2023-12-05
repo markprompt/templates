@@ -1,5 +1,4 @@
-import { toast } from 'sonner';
-
+import { loggedToast } from '../lib/toast';
 import { timeout } from '../lib/utils';
 
 /**
@@ -71,7 +70,7 @@ export async function processCorporatePlanActivation({
   userId: string;
   corporateName: string;
 }): Promise<string> {
-  toast.loading(`Fetching plan options for ${corporateName}.`);
+  loggedToast.loading(`Fetching plan options for ${corporateName}.`);
   const corporatePlanOptions = await getCorporatePlanOptions(corporateName);
 
   if (!corporatePlanOptions) {
@@ -80,7 +79,9 @@ export async function processCorporatePlanActivation({
 
   await timeout(2000);
 
-  toast.loading(`Activating ${corporateName} plan for user id ${userId}.`);
+  loggedToast.loading(
+    `Activating ${corporateName} plan for user id ${userId}.`,
+  );
 
   const isPlanActivated = await activateCorporatePlan(
     userId,
@@ -92,7 +93,7 @@ export async function processCorporatePlanActivation({
   }
 
   await timeout(2000);
-  toast.success(`Plan ${corporateName} activated for user id ${userId}.`);
+  loggedToast.success(`Plan ${corporateName} activated for user id ${userId}.`);
 
   return `Your corporate plan with ${corporateName} has been successfully activated.`;
 }

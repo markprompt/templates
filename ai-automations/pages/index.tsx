@@ -6,7 +6,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+
+import { loggedToast } from '@/lib/toast';
 
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/ui/Navbar';
@@ -95,7 +96,7 @@ export default function Home() {
     localStorage.setItem('markprompt-demo-data', JSON.stringify(data));
     await timeout(500);
     setSaving(false);
-    toast.success('Settings have been saved');
+    loggedToast.success('Settings have been saved');
   }, [data]);
 
   const clearData = useCallback(() => {
@@ -103,7 +104,7 @@ export default function Home() {
     localStorage.removeItem('markprompt-zendesk-store');
     localStorage.removeItem('markprompt-demo-data');
     setData(defaultData);
-    toast.success('Data has been reset');
+    loggedToast.success('Data has been reset');
     setTimeout(() => {
       router.reload();
     }, 2000);

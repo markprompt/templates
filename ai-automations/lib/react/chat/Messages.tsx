@@ -1,7 +1,8 @@
 import { Check } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment, type ReactElement, useRef, useMemo } from 'react';
-import { toast } from 'sonner';
+
+import { loggedToast } from '@/lib/toast';
 
 import { MessageAnswer } from './MessageAnswer';
 import { MessagePrompt } from './MessagePrompt';
@@ -40,6 +41,14 @@ interface MarkpromptMessageProps {
 }
 
 function MarkpromptMessage(props: MarkpromptMessageProps): ReactElement {
+  const isNextMessageDoneFunction = useMemo(() => {
+    const nextMessage = props.messages[props.index + 1];
+    return (
+      nextMessage?.role === 'function' &&
+      (nextMessage?.state === 'done' || nextMessage?.state === 'cancelled')
+    );
+  }, [props]);
+
   return (
     <Fragment>
       {props.message.role === 'user' && (
@@ -82,10 +91,10 @@ function MarkpromptMessage(props: MarkpromptMessageProps): ReactElement {
         <div className="px-6 text-base mt-4">
           {(() => {
             const nextMessage = props.messages[props.index + 1];
-            const isNextMessageDoneFunction =
-              nextMessage?.role === 'function' &&
-              (nextMessage?.state === 'done' ||
-                nextMessage?.state === 'cancelled');
+            // const isNextMessageDoneFunction =
+            //   nextMessage?.role === 'function' &&
+            //   (nextMessage?.state === 'done' ||
+            //     nextMessage?.state === 'cancelled');
             const functionCall = props.functions?.find(
               (f) => f.name === props.message?.function_call?.name,
             );
@@ -101,8 +110,9 @@ function MarkpromptMessage(props: MarkpromptMessageProps): ReactElement {
             }
 
             if (!isNextMessageDoneFunction && functionCall?.autoConfirm) {
-              props.message.content;
-              const signature = `${props.message.content}:${props.index}`;
+              const signature = `${JSON.stringify(
+                props.message.function_call,
+              )}`;
               if (!props.submittedCalls.current?.includes(signature)) {
                 // Sumbitting function call
                 props.submitFunctionCall(props.message.function_call!);
@@ -141,7 +151,7 @@ function MarkpromptMessage(props: MarkpromptMessageProps): ReactElement {
                   <button
                     className="py-1 px-3 bg-neutral-100 border border-neutral-200 text-sm font-medium rounded-md hover:bg-neutral-200 hover:border-neutral-300 text-black active:scale-95 transform transition"
                     onClick={() => {
-                      toast.success('The action was canceled.');
+                      loggedToast.success('The action was canceled.');
                     }}
                   >
                     Cancel

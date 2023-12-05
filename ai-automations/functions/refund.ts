@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { toast } from 'sonner';
+import { loggedToast } from '@/lib/toast';
 
 import { UserInfo } from '../lib/types';
 import { timeout } from '../lib/utils';
@@ -43,20 +43,22 @@ export const processRefund =
     userId: string;
     billingCycleEnd: string;
   }): Promise<string> => {
-    toast.loading(`Retrieving user info for ${userInfo.username}.`);
+    loggedToast.loading(`Retrieving user info for ${userInfo.username}.`);
     await timeout(2000);
 
-    toast.loading(`Checking refund eligibility for ${userInfo.username}.`);
+    loggedToast.loading(
+      `Checking refund eligibility for ${userInfo.username}.`,
+    );
     const refundEligibility = await checkRefundEligibility(userInfo);
 
     await timeout(2000);
 
-    toast.success(`${userInfo.username} is elligible for a refund.`);
+    loggedToast.success(`${userInfo.username} is elligible for a refund.`);
 
     await timeout(2000);
 
     if (refundEligibility) {
-      toast.loading(
+      loggedToast.loading(
         `Processing refund on Stripe for the billing cycle ending at ${billingCycleEnd}.`,
       );
       const isRefundProcessed = await processRefundThroughStripe(
@@ -65,7 +67,7 @@ export const processRefund =
       );
       await timeout(3000);
 
-      toast.success('Done processing refund.');
+      loggedToast.success('Done processing refund.');
       if (isRefundProcessed) {
         return 'Refund request approved. The refund will be credited back to your original payment method.';
       } else {

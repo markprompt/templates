@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { toast } from 'sonner';
+
+import { loggedToast } from '@/lib/toast';
 
 import { timeout } from '../lib/utils';
 
@@ -56,7 +57,7 @@ export async function processReferralVerification({
   userEmail: string;
   friendEmail: string;
 }): Promise<string> {
-  toast.loading(`Looking up referral info for ${friendEmail}.`);
+  loggedToast.loading(`Looking up referral info for ${friendEmail}.`);
   const referralInfo = await getReferralInfo(userEmail, friendEmail);
   await timeout(2000);
 
@@ -64,7 +65,7 @@ export async function processReferralVerification({
     return `We're sorry, we could not find any referral information for the email address: ${friendEmail}.`;
   }
 
-  toast.loading(
+  loggedToast.loading(
     `Awarding credits to ${userEmail} for the referral of ${friendEmail}.`,
   );
   const areCreditsAwarded = await awardReferralCredits(referralInfo);
@@ -74,7 +75,7 @@ export async function processReferralVerification({
     return `We're sorry, we couldn't award the referral credits. Please contact customer service for further assistance.`;
   }
 
-  toast.success(`Referral credits awarded to ${userEmail}.`);
+  loggedToast.success(`Referral credits awarded to ${userEmail}.`);
 
   return `Your referral was successful. Referral credits have been awarded to your account.`;
 }
