@@ -14,7 +14,7 @@ import { SearchView } from './search/SearchView';
 import { type MarkpromptOptions } from './types';
 import { useDefaults } from './useDefaults';
 import { useViews, type View } from './useViews';
-import { MarkpromptIcon } from '../../components/ui/Markprompt';
+import { Logo } from '../../components/ui/Logo';
 
 type MarkpromptProps = MarkpromptOptions &
   Omit<
@@ -228,8 +228,8 @@ function MarkpromptContent(props: MarkpromptContentProps): ReactElement {
   if (!search?.enabled) {
     return (
       <div className="MarkpromptTabsContainer">
-        <div className="bg-black px-4 py-2">
-          <MarkpromptIcon className="w-9 h-9" />
+        <div className="bg-black px-4 py-4">
+          <Logo className="text-white w-7 h-7" />
         </div>
         <div className="MarkpromptViews">
           <div
