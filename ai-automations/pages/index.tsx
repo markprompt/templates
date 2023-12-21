@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Markprompt } from '@markprompt/react';
 import * as Select from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp, ChevronsDown } from 'lucide-react';
 import { Inter } from 'next/font/google';
@@ -11,7 +12,6 @@ import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/ui/Navbar';
 import { functions } from '../functions/definitions';
 import { companyData, defaultData } from '../lib/constants';
-import { Markprompt } from '../lib/react';
 import { loggedToast } from '../lib/toast';
 import { Data } from '../lib/types';
 import { timeout } from '../lib/utils';
@@ -140,7 +140,8 @@ Some other important rules to strictly follow:
 - Never make up a fake email address.
 
 Only use functions and function parameters you have been provided with.`,
-          functions: functions(data),
+          tools: functions(data),
+          ToolCallsConfirmation,
         }}
         references={{ display: 'end' }}
         showBranding={false}
@@ -269,4 +270,8 @@ Only use functions and function parameters you have been provided with.`,
       </div>
     </main>
   );
+}
+
+function ToolCallsConfirmation(props: ConfirmationProps) {
+  return '';
 }

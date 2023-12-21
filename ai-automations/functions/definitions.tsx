@@ -1,38 +1,45 @@
+import { ChatViewTool } from '@markprompt/react/dist/chat/store';
+
 import { processCorporatePlanActivation } from './corporate';
 import { processClassCreditInquiry } from './credits';
 import { processReferralVerification } from './referral';
 import { processRefund } from './refund';
 import { getWeatherInCity } from './weather';
 import { defaultData } from '../lib/constants';
-import { FunctionDefinitionWithFunction } from '../lib/react';
 import { Data } from '../lib/types';
 
-export const functions = (data: Data): FunctionDefinitionWithFunction[] => {
+export const functions = (data: Data): ChatViewTool[] => {
   return [
     {
-      actual: processRefund(data.user || defaultData.user),
-      name: 'processRefund',
-      description: 'Cancel auto-renewal and process a refund for a customer',
+      tool: {
+        type: 'function',
+        function: {
+          name: 'processRefund',
+          description:
+            'Cancel auto-renewal and process a refund for a customer',
+          parameters: {
+            type: 'object',
+            properties: {
+              userId: {
+                type: 'string',
+                description: 'The username or email address of the user',
+              },
+              billingCycleEnd: {
+                type: 'string',
+                description: 'The date the billing cycle ends',
+              },
+            },
+            required: ['userId', 'billingCycleEnd'],
+          },
+        },
+      },
+      call: processRefund(data.user || defaultData.user),
       confirmationMessage: () => (
         <>
           Please confirm that you want to cancel auto-renewal and proceed with a
           refund.
         </>
       ),
-      parameters: {
-        type: 'object',
-        properties: {
-          userId: {
-            type: 'string',
-            description: 'The username or email address of the user',
-          },
-          billingCycleEnd: {
-            type: 'string',
-            description: 'The date the billing cycle ends',
-          },
-        },
-        required: ['userId', 'billingCycleEnd'],
-      },
     },
     {
       actual: processReferralVerification,
@@ -119,5 +126,5 @@ export const functions = (data: Data): FunctionDefinitionWithFunction[] => {
         required: ['city'],
       },
     },
-  ];
+  ] satisfies ChatViewTool[];
 };
