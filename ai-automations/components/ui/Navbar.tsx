@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import { CheckIcon, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
-import { MarkpromptIcon } from './Markprompt';
+import { Logo } from './Logo';
 
 export const Navbar = ({
   className,
@@ -25,7 +25,7 @@ export const Navbar = ({
       )}
     >
       <div className="flex-nonw flex flex-row gap-3 items-center">
-        <MarkpromptIcon className="w-8 h-8" />
+        <Logo className="w-8 h-8" />
       </div>
       <div className="flex-grow" />
       <DropdownMenu.Root>
