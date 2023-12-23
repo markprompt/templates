@@ -127,7 +127,7 @@ export default function Home() {
         chat={{
           enabled: true,
           model: 'gpt-4-1106-preview',
-          apiUrl: `https://api.markprompt.dev/v1/chat`,
+          apiUrl: `https://api.markprompt.com/chat`,
           systemPrompt: `You are a company representative from ${companyData.name} who loves to help people. Here is some important information about the user your are speaking with:
 - First name: "${data.user.firstName}"
 - Last name: "${data.user.lastName}"
@@ -141,7 +141,7 @@ Some other important rules to strictly follow:
 
 Only use functions and function parameters you have been provided with.`,
           tools: functions(data),
-          ToolCallsConfirmation,
+          // ToolCallsConfirmation,
         }}
         references={{ display: 'end' }}
         showBranding={false}
@@ -272,6 +272,6 @@ Only use functions and function parameters you have been provided with.`,
   );
 }
 
-function ToolCallsConfirmation(props: ConfirmationProps) {
-  return '';
-}
+// function ToolCallsConfirmation(props: ConfirmationProps) {
+//   return '';
+// }
