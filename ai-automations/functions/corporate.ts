@@ -63,13 +63,14 @@ async function activateCorporatePlan(
  * @param {string} corporateName - The corporate name.
  * @returns {Promise<string>} - Promise object represents a message indicating if the corporate plan activation was successful
  */
-export async function processCorporatePlanActivation({
-  userId,
-  corporateName,
-}: {
-  userId: string;
-  corporateName: string;
-}): Promise<string> {
+export async function processCorporatePlanActivation(
+  args: string,
+): Promise<string> {
+  const { userId, corporateName } = JSON.parse(args) as {
+    userId: string;
+    corporateName: string;
+  };
+
   loggedToast.loading(`Fetching plan options for ${corporateName}.`);
   const corporatePlanOptions = await getCorporatePlanOptions(corporateName);
 

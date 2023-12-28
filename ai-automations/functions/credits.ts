@@ -57,11 +57,11 @@ async function getClassCredits(
  * @param {string} className - The name of the class.
  * @returns {Promise<string>} - Promise object represents a message indicating how many credits the specified class would be.
  */
-export async function processClassCreditInquiry({
-  className,
-}: {
-  className: string;
-}): Promise<string> {
+export async function processClassCreditInquiry(args: string): Promise<string> {
+  const { className } = JSON.parse(args) as {
+    className: string;
+  };
+
   loggedToast.loading(`Retrieving class info for ${className}.`);
   const classInfo = await getClassInfo(className);
 

@@ -50,13 +50,14 @@ async function awardReferralCredits(
  * @param {string} friendEmail - The email of the referred friend.
  * @returns {Promise<string>} - Promise object represents a message indicating if the referral was successful.
  */
-export async function processReferralVerification({
-  userEmail,
-  friendEmail,
-}: {
-  userEmail: string;
-  friendEmail: string;
-}): Promise<string> {
+export async function processReferralVerification(
+  args: string,
+): Promise<string> {
+  const { userEmail, friendEmail } = JSON.parse(args) as {
+    userEmail: string;
+    friendEmail: string;
+  };
+
   loggedToast.loading(`Looking up referral info for ${friendEmail}.`);
   const referralInfo = await getReferralInfo(userEmail, friendEmail);
   await timeout(2000);

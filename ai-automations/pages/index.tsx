@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Markprompt } from '@markprompt/react';
 import * as Select from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp, ChevronsDown } from 'lucide-react';
 import { Inter } from 'next/font/google';
@@ -11,7 +12,6 @@ import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/ui/Navbar';
 import { functions } from '../functions/definitions';
 import { companyData, defaultData } from '../lib/constants';
-import { Markprompt } from '../lib/react';
 import { loggedToast } from '../lib/toast';
 import { Data } from '../lib/types';
 import { timeout } from '../lib/utils';
@@ -127,7 +127,7 @@ export default function Home() {
         chat={{
           enabled: true,
           model: 'gpt-4-1106-preview',
-          apiUrl: `https://api.markprompt.dev/v1/chat`,
+          apiUrl: `https://api.markprompt.com/chat`,
           systemPrompt: `You are a company representative from ${companyData.name} who loves to help people. Here is some important information about the user your are speaking with:
 - First name: "${data.user.firstName}"
 - Last name: "${data.user.lastName}"
@@ -140,7 +140,8 @@ Some other important rules to strictly follow:
 - Never make up a fake email address.
 
 Only use functions and function parameters you have been provided with.`,
-          functions: functions(data),
+          tools: functions(data),
+          // ToolCallsConfirmation,
         }}
         references={{ display: 'end' }}
         showBranding={false}
@@ -270,3 +271,7 @@ Only use functions and function parameters you have been provided with.`,
     </main>
   );
 }
+
+// function ToolCallsConfirmation(props: ConfirmationProps) {
+//   return '';
+// }
