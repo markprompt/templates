@@ -1,7 +1,7 @@
 export const timeout = (ms: number) => {
-  return new Promise((res) =>
+  return new Promise<void>((resolve) =>
     setTimeout(() => {
-      res(true);
+      resolve();
     }, ms),
   );
 };

@@ -36,13 +36,12 @@ async function processRefundThroughStripe(
  */
 export const processRefund =
   (userInfo: UserInfo) =>
-  async ({
-    userId,
-    billingCycleEnd,
-  }: {
-    userId: string;
-    billingCycleEnd: string;
-  }): Promise<string> => {
+  async (args: string): Promise<string> => {
+    const { userId, billingCycleEnd } = JSON.parse(args) as {
+      userId: string;
+      billingCycleEnd: string;
+    };
+
     loggedToast.loading(`Retrieving user info for ${userInfo.username}.`);
     await timeout(2000);
 
