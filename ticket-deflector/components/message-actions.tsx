@@ -5,7 +5,7 @@ import { uniqBy } from 'lodash';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button-c';
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import { cn } from '@/lib/utils';
 

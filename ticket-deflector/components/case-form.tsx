@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button-c';
 import {
   Card,
   CardContent,
