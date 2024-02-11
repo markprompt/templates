@@ -7,7 +7,7 @@ import { ChatScrollAnchor } from '@/components/chat-scroll-anchor';
 import { Icons } from '@/components/icons';
 import { Messages } from '@/components/messages';
 import { PromptForm } from '@/components/prompt-form';
-import { Button } from '@/components/ui/button-c';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,

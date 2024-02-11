@@ -1,7 +1,7 @@
 import { useChatStore } from '@markprompt/react';
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button-c';
+import { Button } from '@/components/ui/button';
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit';
 import { cn } from '@/lib/utils';
 
