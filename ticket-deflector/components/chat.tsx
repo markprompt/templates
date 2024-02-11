@@ -32,11 +32,16 @@ export function Chat() {
       <div className="flex flex-col flex-no-wrap overflow-y-auto">
         <CardHeader
           className={cn('space-y-1 flex-shrink-0 min-w-0 min-h-0', {
-            'shadow-subtle': isChatting,
+            'shadow-subtle py-4': isChatting,
           })}
         >
           <div className="flex flex-row items-center space-x-2">
-            <CardTitle className="flex-grow text-2xl">
+            <CardTitle
+              className={cn('flex-grow', {
+                'text-xl': isChatting,
+                'text-2xl': !isChatting,
+              })}
+            >
               {isChatting ? 'Support chat' : 'What is your issue?'}
             </CardTitle>
             <Button
@@ -61,7 +66,7 @@ export function Chat() {
         </CardHeader>
         <div
           data-state={isChatting ? 'expanded' : 'collapsed'}
-          className="data-[state=collapsed]:animate-accordion-up data-[state=expanded]:animate-accordion-down flex flex-col flex-no-wrap overflow-y-auto [--radix-accordion-content-height:480px]"
+          className="data-[state=collapsed]:animate-accordion-up data-[state=expanded]:animate-accordion-down flex flex-col flex-no-wrap overflow-y-auto [--radix-accordion-content-height:540px]"
         >
           <CardContent className="flex-1 min-w-0 grid gap-4 relative pt-4">
             <Messages />
@@ -76,7 +81,7 @@ export function Chat() {
         </div>
         <CardContent
           className={cn({
-            'pt-6 shadow-subtle-up': isChatting,
+            'py-4 shadow-subtle-up': isChatting,
           })}
         >
           <div className="flex-shrink-0 min-w-0 min-h-0">
@@ -85,13 +90,13 @@ export function Chat() {
               placeholder={
                 isChatting ? 'Send a message' : 'I have an issue with...'
               }
-              cta="Ask AI"
+              cta={isChatting ? 'Send' : 'Ask AI'}
             />
           </div>
         </CardContent>
       </div>
       {isChatting && (
-        <CardFooter className="flex flex-row items-center space-x-4">
+        <CardFooter className="flex flex-row items-center space-x-4 py-4">
           <p className="flex-grow text-sm text-muted-foreground text-right">
             Still need help?
           </p>
