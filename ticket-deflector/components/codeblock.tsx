@@ -92,7 +92,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
   };
 
   return (
-    <div className="relative w-full font-sans overflow-hidden bg-neutral-950">
+    <div className="relative w-full font-sans bg-neutral-950">
       <div className="flex items-center justify-between w-full px-6 py-1 pr-4 bg-neutral-900 text-neutral-100">
         <span className="font-mono text-xs lowercase">{language}</span>
         <div className="flex items-center space-x-1">
@@ -120,29 +120,30 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
           </Button>
         </div>
       </div>
-      <SyntaxHighlighter
-        language={language}
-        style={coldarkDark}
-        PreTag="div"
-        showLineNumbers
-        customStyle={{
-          margin: 0,
-          width: '100%',
-          background: 'transparent',
-          padding: '1.5rem 1rem',
-        }}
-        lineNumberStyle={{
-          userSelect: 'none',
-        }}
-        codeTagProps={{
-          style: {
-            // fontSize: '0.75rem',
-            fontFamily: 'var(--font-mono)',
-          },
-        }}
-      >
-        {value}
-      </SyntaxHighlighter>
+      <div className="w-full overflow-x-auto">
+        <SyntaxHighlighter
+          language={language}
+          style={coldarkDark}
+          PreTag="div"
+          showLineNumbers
+          customStyle={{
+            margin: 0,
+            width: '100%',
+            background: 'transparent',
+            padding: '1.5rem 1rem',
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily: 'var(--font-mono)',
+            },
+          }}
+          lineNumberStyle={{
+            userSelect: 'none',
+          }}
+        >
+          {value}
+        </SyntaxHighlighter>
+      </div>
     </div>
   );
 });

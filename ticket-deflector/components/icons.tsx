@@ -23,8 +23,8 @@ export const Icons = {
           y2={0.165}
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="color(display-p3 .2479 0 .8123)" />
-          <stop offset={1} stopColor="color(display-p3 .5901 .4101 1)" />
+          <stop stopColor="color(display-p3 .3189 .1452 .9043)" />
+          <stop offset={1} stopColor="color(display-p3 .69 .3181 .9407)" />
         </linearGradient>
       </defs>
     </svg>

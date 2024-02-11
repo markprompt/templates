@@ -16,7 +16,6 @@ export interface MessageProps {
 }
 
 export function Message({ message, isLoading, ...props }: MessageProps) {
-  console.log('message', message.content);
   return (
     <div className={cn('group relative space-x-4 flex items-start')} {...props}>
       <div
@@ -38,7 +37,7 @@ export function Message({ message, isLoading, ...props }: MessageProps) {
           </p>
         )}
         <MemoizedReactMarkdown
-          className="prose prose-sm break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 prose-pre:rounded-md max-w-full prose-pre:text-sm prose-code:text-[0.825rem]"
+          className="w-full overflow-hidden prose prose-sm break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 prose-pre:rounded-md max-w-full prose-pre:text-sm prose-code:text-[0.825rem]"
           remarkPlugins={[remarkGfm, remarkMath]}
           components={{
             p({ children }) {

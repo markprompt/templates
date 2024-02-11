@@ -13,7 +13,7 @@ export function Messages() {
     messageState === 'preload' || messageState === 'streaming-answer';
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 w-full min-w-0">
       {messages.map((message, i) => {
         return (
           <Message

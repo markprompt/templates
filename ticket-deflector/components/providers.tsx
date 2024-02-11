@@ -9,7 +9,11 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider {...props}>
       <ChatProvider
-        chatOptions={{}}
+        chatOptions={{
+          model: 'gpt-4-turbo-preview',
+          systemPrompt:
+            'You are an expert AI technical support assistant from Markprompt who excels at helping people solving their issues. You never ask follow up questions.',
+        }}
         projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
       >
         {children}
