@@ -1,7 +1,13 @@
 'use client';
 
 import { useChatStore } from '@markprompt/react';
+import { useState } from 'react';
 
+import { ChatScrollAnchor } from '@/components/chat-scroll-anchor';
+import { Icons } from '@/components/icons';
+import { Messages } from '@/components/messages';
+import { PromptForm } from '@/components/prompt-form';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,11 +18,24 @@ import {
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-import { ChatScrollAnchor } from './chat-scroll-anchor';
-import { Messages } from './messages';
-import { PromptForm } from './prompt-form';
-import { Button } from './ui/button';
+const CaseCreationButton = ({ onSubmitCase }: { onSubmitCase: () => void }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  return (
+    <Button
+      size="sm"
+      disabled={isSubmitting}
+      onClick={async () => {
+        setIsSubmitting(true);
+        await onSubmitCase();
+        setIsSubmitting(false);
+      }}
+    >
+      {isSubmitting && <Icons.spinner className="w-4 h-4 animate-spin mr-2" />}
+      Create case
+    </Button>
+  );
+};
 export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
   const messages = useChatStore((state) => state.messages);
   const selectConversation = useChatStore((state) => state.selectConversation);
@@ -100,9 +119,7 @@ export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
           <p className="flex-grow text-sm text-muted-foreground text-right">
             Still need help?
           </p>
-          <Button size="sm" onClick={onSubmitCase}>
-            Create case
-          </Button>
+          <CaseCreationButton onSubmitCase={onSubmitCase} />
         </CardFooter>
       )}
     </Card>

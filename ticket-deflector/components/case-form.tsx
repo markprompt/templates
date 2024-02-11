@@ -45,16 +45,24 @@ const ticketFormSchema = z.object({
 
 type TicketFormValues = z.infer<typeof ticketFormSchema>;
 
+export type TicketInferredFormData = Pick<
+  TicketFormValues,
+  'category' | 'severity' | 'subject' | 'description'
+>;
+
 const defaultValues: Partial<TicketFormValues> = {
   account: 'alicia@acme.com',
   product: 'web',
   project: 'dashboard',
 };
 
-export function CaseForm() {
+export function CaseForm(inferredFormData: TicketInferredFormData) {
   const form = useForm<TicketFormValues>({
     resolver: zodResolver(ticketFormSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      ...inferredFormData,
+    },
     mode: 'onChange',
   });
 
@@ -159,7 +167,10 @@ export function CaseForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Problem area</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a category" />
@@ -183,7 +194,10 @@ export function CaseForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Severity level</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a severity level" />

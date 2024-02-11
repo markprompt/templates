@@ -3,9 +3,9 @@ import Image from 'next/image';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
-// import { ChatMessageActions } from '@/components/chat-message-actions';
 import { CodeBlock } from '@/components/codeblock';
 import { MemoizedReactMarkdown } from '@/components/markdown';
+import { MessageActions } from '@/components/message-actions';
 import { cn } from '@/lib/utils';
 
 import { Icons } from './icons';
@@ -63,7 +63,7 @@ export function Message({ message, isLoading, ...props }: MessageProps) {
         >
           {message.content}
         </MemoizedReactMarkdown>
-        {/* <ChatMessageActions message={message} /> */}
+        <MessageActions message={message} />
       </div>
     </div>
   );
