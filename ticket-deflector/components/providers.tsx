@@ -4,6 +4,7 @@ import { ChatProvider } from '@markprompt/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ThemeProviderProps } from 'next-themes/dist/types';
 import * as React from 'react';
+import { Toaster } from 'sonner';
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -17,6 +18,7 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
         projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
       >
         {children}
+        <Toaster />
       </ChatProvider>
     </NextThemesProvider>
   );

@@ -1,5 +1,5 @@
-import { Chat } from '@/components/chat';
+import { CaseChat } from '@/components/case-chat';
 
 export default function IndexPage() {
-  return <Chat />;
+  return <CaseChat />;
 }

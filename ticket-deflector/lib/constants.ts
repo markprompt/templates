@@ -7,13 +7,19 @@ export const DEFAULT_SUBMIT_CHAT_OPTIONS: SubmitChatOptions = {
 };
 
 export const CATEGORIES = [
-  'API',
-  'Security',
-  'Integrations',
-  'Projects',
-  'Teams',
-  'Frameworks',
-  'React',
-  'Insights',
   'Accounts',
+  'Frameworks',
+  'Insights',
+  'Integrations',
+  'Payments',
+  'Projects',
+  'Security',
+  'Teams',
+];
+
+export const SEVERITY = [
+  'Severity 1',
+  'Severity 2',
+  'Severity 3',
+  'Severity 4',
 ];

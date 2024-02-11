@@ -17,7 +17,7 @@ import { Messages } from './messages';
 import { PromptForm } from './prompt-form';
 import { Button } from './ui/button';
 
-export function Chat() {
+export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
   const messages = useChatStore((state) => state.messages);
   const selectConversation = useChatStore((state) => state.selectConversation);
 
@@ -100,7 +100,9 @@ export function Chat() {
           <p className="flex-grow text-sm text-muted-foreground text-right">
             Still need help?
           </p>
-          <Button size="sm">Create case</Button>
+          <Button size="sm" onClick={onSubmitCase}>
+            Create case
+          </Button>
         </CardFooter>
       )}
     </Card>
