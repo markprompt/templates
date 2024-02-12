@@ -114,7 +114,7 @@ export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
             />
           </div>
           {!isChatting && (
-            <p className="mt-4 text-xs text-muted-foreground -mb-3">
+            <p className="mt-3 text-xs text-muted-foreground -mb-3">
               Try to ask: how do I add Markprompt to my website?
             </p>
           )}
