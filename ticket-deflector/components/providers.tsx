@@ -11,8 +11,7 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
     <NextThemesProvider {...props}>
       <ChatProvider
         chatOptions={{
-          apiUrl: 'http://api.localhost:3000/chat',
-          model: 'gpt-4-turbo-preview',
+          model: 'gpt-4',
           systemPrompt:
             'You are an expert AI technical support assistant from Markprompt who excels at helping people solving their issues. You never ask follow up questions.',
         }}
