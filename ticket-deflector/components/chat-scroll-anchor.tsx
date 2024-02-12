@@ -21,6 +21,7 @@ export function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
     if (isAtBottom && trackVisibility && !inView) {
       entry?.target.scrollIntoView({
         block: 'start',
+        behavior: 'smooth',
       });
     }
   }, [inView, entry, isAtBottom, trackVisibility]);
