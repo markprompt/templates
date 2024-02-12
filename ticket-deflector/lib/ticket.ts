@@ -12,6 +12,7 @@ const generate = async (message: string, instructions: string) => {
     'gpt-3.5-turbo',
     true,
     true,
+    false,
     (c) => (content = c),
   );
   return content;

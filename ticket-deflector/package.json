@@ -12,7 +12,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.4",
     "@hookform/resolvers": "^3.3.4",
-    "@markprompt/core": "^0.25.0",
+    "@markprompt/core": "^0.25.1",
     "@markprompt/react": "^0.38.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-accessible-icon": "^1.0.3",

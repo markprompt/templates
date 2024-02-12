@@ -13,6 +13,7 @@ export const generateChat = async (
     'gpt-4',
     false,
     false,
+    true,
     onContent,
     onReferences,
   );

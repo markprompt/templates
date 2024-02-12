@@ -11,6 +11,7 @@ export const submitChat = async (
   model: SubmitChatOptions['model'],
   excludeFromInsights: SubmitChatOptions['excludeFromInsights'],
   doNotInjectContext: SubmitChatOptions['doNotInjectContext'],
+  allowFollowUpQuestions: SubmitChatOptions['allowFollowUpQuestions'],
   onContent: (content: string) => void,
   onReferences?: (references: FileSectionReference[]) => void,
 ) => {
@@ -22,6 +23,7 @@ export const submitChat = async (
       model,
       excludeFromInsights,
       doNotInjectContext,
+      allowFollowUpQuestions,
     },
   )) {
     if (value.content) {
