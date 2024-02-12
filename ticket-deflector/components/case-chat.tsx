@@ -59,7 +59,8 @@ ${transcript}`;
 
     setTimeout(() => {
       window.scrollTo({
-        top: document.body.scrollHeight - 1100,
+        // top: document.body.scrollHeight - 1100,
+        top: 820,
         behavior: 'smooth',
       });
     }, 200);
