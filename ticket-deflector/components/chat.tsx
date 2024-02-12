@@ -36,6 +36,7 @@ const CaseCreationButton = ({ onSubmitCase }: { onSubmitCase: () => void }) => {
     </Button>
   );
 };
+
 export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
   const messages = useChatStore((state) => state.messages);
   const selectConversation = useChatStore((state) => state.selectConversation);
@@ -112,6 +113,11 @@ export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
               cta={isChatting ? 'Send' : 'Ask AI'}
             />
           </div>
+          {!isChatting && (
+            <p className="mt-4 text-xs text-muted-foreground -mb-3">
+              Try to ask: how do I add Markprompt to my website?
+            </p>
+          )}
         </CardContent>
       </div>
       {isChatting && (

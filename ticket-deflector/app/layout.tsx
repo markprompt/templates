@@ -1,6 +1,8 @@
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
-
 import '@/app/globals.css';
+import Link from 'next/link';
+
+import { Icons } from '@/components/icons';
 import { Providers } from '@/components/providers';
 import { cn } from '@/lib/utils';
 
@@ -57,6 +59,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <div className="flex flex-col">
+            <Link
+              className="place-self-end -mt-4 md:-mr-4 md:mb-2 mb-4 hover:opacity-50 transition"
+              href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
+            >
+              <Icons.github className="w-5 h-5" />
+            </Link>
             <main className="flex flex-col flex-1 bg-muted/50 mx-auto max-w-screen-md w-full">
               {children}
             </main>
