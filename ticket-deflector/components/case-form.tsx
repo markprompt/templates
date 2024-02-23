@@ -45,7 +45,7 @@ const ticketFormSchema = z.object({
 
 type TicketFormValues = z.infer<typeof ticketFormSchema>;
 
-export type TicketInferredFormData = Pick<
+export type TicketGeneratedData = Pick<
   TicketFormValues,
   'category' | 'severity' | 'subject' | 'description'
 >;
@@ -56,12 +56,12 @@ const defaultValues: Partial<TicketFormValues> = {
   project: 'dashboard',
 };
 
-export function CaseForm(inferredFormData: TicketInferredFormData) {
+export function CaseForm(generatedData: TicketGeneratedData) {
   const form = useForm<TicketFormValues>({
     resolver: zodResolver(ticketFormSchema),
     defaultValues: {
       ...defaultValues,
-      ...inferredFormData,
+      ...generatedData,
     },
     mode: 'onChange',
   });

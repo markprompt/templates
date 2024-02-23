@@ -19,6 +19,7 @@ export const submitChat = async (
     messages,
     process.env.NEXT_PUBLIC_PROJECT_KEY!,
     {
+      apiUrl: process.env.NEXT_PUBLIC_API_URL,
       systemPrompt,
       model,
       excludeFromInsights,

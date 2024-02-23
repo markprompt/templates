@@ -6,6 +6,7 @@ import { Message } from './message';
 export function Messages() {
   const messages = useChatStore((state) => state.messages);
 
+  const chatOptions = useChatStore((state) => state.options);
   const messageState = useChatStore(
     (state) => state.messages[state.messages.length - 1]?.state,
   );
@@ -22,6 +23,7 @@ export function Messages() {
             }
             key={message.id}
             message={message}
+            chatOptions={chatOptions}
           />
         );
       })}

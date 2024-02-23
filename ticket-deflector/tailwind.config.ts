@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
@@ -69,6 +70,13 @@ const config = {
         'subtle-up':
           '0 -1px rgba(230,230,230,.53),0 5px 20px -5px rgba(0,0,0,.24)',
       },
+      typography: ({ theme }: { theme: any }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.neutral.950'),
+          },
+        },
+      }),
     },
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],

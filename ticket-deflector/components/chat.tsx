@@ -1,7 +1,7 @@
 'use client';
 
-import { useChatStore } from '@markprompt/react';
-import { useState } from 'react';
+import { ChatViewMessage, useChatStore } from '@markprompt/react';
+import { useEffect } from 'react';
 
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor';
 import { Icons } from '@/components/icons';
@@ -18,32 +18,40 @@ import {
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { useChatForm } from './chat-form-context';
+
 const CaseCreationButton = ({ onSubmitCase }: { onSubmitCase: () => void }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isCreatingCase } = useChatForm();
 
   return (
-    <Button
-      size="sm"
-      disabled={isSubmitting}
-      onClick={async () => {
-        setIsSubmitting(true);
-        await onSubmitCase();
-        setIsSubmitting(false);
-      }}
-    >
-      {isSubmitting && <Icons.spinner className="w-4 h-4 animate-spin mr-2" />}
+    <Button size="sm" disabled={isCreatingCase} onClick={onSubmitCase}>
+      {isCreatingCase && (
+        <Icons.spinner className="w-4 h-4 animate-spin mr-2" />
+      )}
       Create case
     </Button>
   );
 };
 
-export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
+export function Chat({
+  onNewMessages,
+  onSubmitCase,
+  onNewChat,
+}: {
+  onNewMessages: (messages: ChatViewMessage[]) => void;
+  onSubmitCase: () => void;
+  onNewChat: () => void;
+}) {
   const messages = useChatStore((state) => state.messages);
   const selectConversation = useChatStore((state) => state.selectConversation);
 
   const messageState = useChatStore(
     (state) => state.messages[state.messages.length - 1]?.state,
   );
+
+  useEffect(() => {
+    onNewMessages(messages);
+  }, [messages, onNewMessages]);
 
   const isChatting = messages.length > 0;
 
@@ -73,6 +81,7 @@ export function Chat({ onSubmitCase }: { onSubmitCase: () => void }) {
               })}
               onClick={() => {
                 selectConversation(undefined);
+                onNewChat();
               }}
             >
               New chat

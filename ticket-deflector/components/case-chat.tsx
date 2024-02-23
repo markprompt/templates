@@ -1,75 +1,102 @@
 'use client';
 
-import { useChatStore } from '@markprompt/react';
-import { useCallback, useEffect, useState } from 'react';
+import { ChatProvider, ChatViewMessage } from '@markprompt/react';
+import { useCallback, useState } from 'react';
 
-import { CaseForm, TicketInferredFormData } from '@/components/case-form';
+import { type TicketGeneratedData, CaseForm } from '@/components/case-form';
 import { Chat } from '@/components/chat';
-import { getCategory, getSeverity, improve, summarize } from '@/lib/ticket';
+import { generateTicketData } from '@/lib/ticket';
+
+import { useChatForm } from './chat-form-context';
+import { Button } from './ui/button';
 
 export function CaseChat() {
-  const [ticketData, setTicketData] = useState<
-    TicketInferredFormData | undefined
-  >(undefined);
-  const messages = useChatStore((state) => state.messages);
-
-  useEffect(() => {
-    if (messages.length === 0) {
-      setTicketData(undefined);
-    }
-  }, [messages]);
+  const { setIsCreatingCase } = useChatForm();
+  const [messages, setMessages] = useState<ChatViewMessage[]>([]);
+  const [ticketData, setTicketData] = useState<TicketGeneratedData | undefined>(
+    undefined,
+  );
 
   const submitCase = useCallback(async () => {
-    const firstMessage = messages?.[0]?.content;
-    if (!firstMessage) {
-      return;
-    }
-
-    const getCategoryPromise = getCategory(firstMessage);
-    const getSeverityPromise = getSeverity(firstMessage);
-    const summarizePromise = summarize(firstMessage);
-    const improvePromise = improve(firstMessage);
-
-    // Run the 3 tasks concurrently for faster ticket generation
-    const [category, severity, subject, description] = await Promise.all([
-      getCategoryPromise,
-      getSeverityPromise,
-      summarizePromise,
-      improvePromise,
-    ]);
-
-    const transcript = messages
-      .map((m) => `Sender: ${m.role}\n\n${m.content || 'No answer'}`)
-      .join('\n\n===\n\n');
-
-    const summaryWithTranscript = `${description}
-
---------------------------------------------------------------------------------
-
-Full transcript:
-
-${transcript}`;
-
-    setTicketData({
-      category,
-      severity,
-      subject,
-      description: summaryWithTranscript,
-    });
+    setIsCreatingCase(true);
+    const ticketData = await generateTicketData(messages);
+    setTicketData(ticketData);
+    setIsCreatingCase(false);
 
     setTimeout(() => {
+      // Scroll down to ticket form
       window.scrollTo({
-        // top: document.body.scrollHeight - 1100,
-        top: 820,
+        top: document.body.scrollHeight - 1150,
         behavior: 'smooth',
       });
-    }, 200);
-  }, [messages]);
+    }, 500);
+  }, [messages, setIsCreatingCase]);
 
   return (
-    <div className="flex flex-col space-y-4">
-      <Chat onSubmitCase={submitCase} />
-      {ticketData && <CaseForm {...ticketData} />}
-    </div>
+    <ChatProvider
+      chatOptions={{
+        apiUrl: process.env.NEXT_PUBLIC_API_URL,
+        model: 'gpt-4-turbo-preview',
+        systemPrompt:
+          'You are an expert AI technical support assistant from Markprompt who excels at helping people solving their issues. When generating a case, do not mention anything about assistance, next step, or whether an agent will reach out. Just say "Please complete the form submission below."',
+        tool_choice: 'auto',
+        tools: [
+          {
+            tool: {
+              type: 'function',
+              function: {
+                name: 'createCase',
+                description:
+                  'Creates a case automatically when the user asks to create a ticket/case or when they ask to speak to someone.',
+                parameters: {
+                  type: 'object',
+                  properties: {},
+                },
+              },
+            },
+            call: async () => {
+              submitCase();
+              return 'Generating case details for you.';
+            },
+            requireConfirmation: true,
+          },
+        ],
+        ToolCallsConfirmation: ({
+          toolCalls,
+          toolCallsStatus,
+          confirmToolCalls,
+        }) => {
+          const toolCall = toolCalls[0];
+          if (!toolCall) {
+            return <></>;
+          }
+          const status = toolCallsStatus[toolCall.id]?.status;
+          return (
+            <div className="p-3 border border-dashed border-border rounded-md flex flex-col space-y-4 items-start">
+              <p className="text-sm">
+                Please confirm that you want to submit a case:
+              </p>
+              <Button
+                size="sm"
+                onClick={confirmToolCalls}
+                disabled={status === 'done'}
+              >
+                Confirm
+              </Button>
+            </div>
+          );
+        },
+      }}
+      projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+    >
+      <div className="flex flex-col space-y-4">
+        <Chat
+          onNewMessages={setMessages}
+          onSubmitCase={submitCase}
+          onNewChat={() => setTicketData(undefined)}
+        />
+        {ticketData && <CaseForm {...ticketData} />}
+      </div>
+    </ChatProvider>
   );
 }

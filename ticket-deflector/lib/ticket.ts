@@ -1,3 +1,6 @@
+import { ChatViewMessage } from '@markprompt/react';
+
+import { TicketGeneratedData } from '@/components/case-form';
 import { submitChat } from '@/lib/common';
 import { CATEGORIES, SEVERITY } from '@/lib/constants';
 
@@ -46,4 +49,38 @@ export const improve = async (message: string) => {
 - Rewrite it in English if my message is another language.
 - Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`;
   return generate(message, instructions);
+};
+
+export const generateTicketData = async (
+  messages: ChatViewMessage[],
+): Promise<TicketGeneratedData | undefined> => {
+  const firstMessage = messages?.[0]?.content;
+  if (!firstMessage) {
+    return;
+  }
+
+  const getCategoryPromise = getCategory(firstMessage);
+  const getSeverityPromise = getSeverity(firstMessage);
+  const summarizePromise = summarize(firstMessage);
+  const improvePromise = improve(firstMessage);
+
+  // Run the 4 tasks concurrently for faster ticket generation
+  const [category, severity, subject, description] = await Promise.all([
+    getCategoryPromise,
+    getSeverityPromise,
+    summarizePromise,
+    improvePromise,
+  ]);
+
+  const transcript = messages
+    .filter((m) => !m.tool_calls)
+    .map((m) => `Sender: ${m.role}\n\n${m.content || 'No answer'}`)
+    .join('\n\n===\n\n');
+
+  return {
+    category,
+    severity,
+    subject,
+    description: `${description}\n\n${'-'.repeat(80)}\n\nFull transcript:\n\n${transcript}`,
+  };
 };
