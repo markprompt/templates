@@ -124,7 +124,8 @@ export function Chat({
           </div>
           {!isChatting && (
             <p className="mt-3 text-xs text-muted-foreground -mb-3">
-              Try to ask: how do I add Markprompt to my website?
+              Try to ask: how do I add Markprompt to my website? Or: I need to
+              speak with someone.
             </p>
           )}
         </CardContent>
