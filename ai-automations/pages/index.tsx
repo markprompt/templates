@@ -126,8 +126,7 @@ export default function Home() {
         projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
         chat={{
           enabled: true,
-          model: 'gpt-4-1106-preview',
-          apiUrl: `https://api.markprompt.com/chat`,
+          model: 'gpt-4-turbo-preview',
           systemPrompt: `You are a company representative from ${companyData.name} who loves to help people. Here is some important information about the user your are speaking with:
 - First name: "${data.user.firstName}"
 - Last name: "${data.user.lastName}"

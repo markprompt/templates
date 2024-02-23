@@ -15,6 +15,7 @@ export default function IndexPage(): ReactElement {
           display="plain"
           chat={{
             enabled: true,
+            model: "gpt-4-turbo-preview",
             placeholder: "Send a message",
             systemPrompt:
               "You are a friendly AI who loves to help people find the information they need!",
