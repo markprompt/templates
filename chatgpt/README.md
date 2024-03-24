@@ -21,6 +21,6 @@ npm run dev
 
 To learn more about Markprompt, take a look at the following resources:
 
-- [Markprompt Documentation](https://markprompt.com/docs) - learn about the Markprompt APIs and SDKs, and techniques for working with LLMs.
+- Read our [documentation](https://markprompt.com/docs)
 - Follow us on [X](https://x.com/markprompt)
 - Join our [Discord](https://discord.gg/MBMh4apz6X)
