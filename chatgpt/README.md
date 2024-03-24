@@ -23,4 +23,3 @@ To learn more about Markprompt, take a look at the following resources:
 
 - Read our [documentation](https://markprompt.com/docs)
 - Follow us on [X](https://x.com/markprompt)
-- Join our [Discord](https://discord.gg/MBMh4apz6X)
