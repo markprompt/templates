@@ -88,9 +88,7 @@ export function Chat({
             </Button>
           </div>
           {!isChatting && (
-            <CardDescription>
-              Describe the issue your are having
-            </CardDescription>
+            <CardDescription>Describe the issue you are having</CardDescription>
           )}
         </CardHeader>
         <div

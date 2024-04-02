@@ -123,11 +123,11 @@ export default function Home() {
       </Head>
 
       <Markprompt
-        projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+        projectKey={process.env.NEXT_PUBLIC_PROJECT_API_KEY!}
         chat={{
           enabled: true,
           model: 'gpt-4-turbo-preview',
-          systemPrompt: `You are a company representative from ${companyData.name} who loves to help people. Here is some important information about the user your are speaking with:
+          systemPrompt: `You are a company representative from ${companyData.name} who loves to help people. Here is some important information about the user you are speaking with:
 - First name: "${data.user.firstName}"
 - Last name: "${data.user.lastName}"
 - Email: "${data.user.email}"
