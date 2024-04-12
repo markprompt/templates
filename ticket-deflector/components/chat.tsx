@@ -120,10 +120,9 @@ export function Chat({
               cta={isChatting ? 'Send' : 'Ask AI'}
             />
           </div>
-          {!isChatting && (
+          {process.env.NEXT_PUBLIC_FOOTER && !isChatting && (
             <p className="mt-3 text-xs text-muted-foreground -mb-3">
-              Try to ask: how do I add Markprompt to my website? Or: I need to
-              speak with someone.
+              {process.env.NEXT_PUBLIC_FOOTER}
             </p>
           )}
         </CardContent>
