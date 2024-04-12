@@ -23,6 +23,18 @@ export interface MessageProps {
   chatOptions: MarkpromptOptions['chat'];
 }
 
+const LoadingDots = () => {
+  return (
+    <div className="w-12 h-6">
+      <div className="loading-dots">
+        <span />
+        <span />
+        <span />
+      </div>
+    </div>
+  );
+};
+
 export function Message({
   message,
   isLoading,
@@ -61,17 +73,20 @@ export function Message({
       >
         <div
           className={cn(
-            'flex size-7 shrink-0 select-none items-center justify-center rounded-full overflow-hidden',
+            'flex size-7 shrink-0 select-none items-center justify-center rounded-full overflow-hidden border border-stone-200/50 bg-stone-50',
             { 'animate-pulse': isLoading },
           )}
         >
           {message.role === 'user' ? (
             <Image width={28} height={28} alt="user" src="/avatars/user.png" />
           ) : (
-            <Icons.logo className="w-5 h-5" />
+            <Icons.logo className="w-[18px] h-[18px] text-black ml-[-1.5px]" />
           )}
         </div>
         <div className="flex-1 space-y-2 overflow-hidden">
+          {message.role === 'assistant' &&
+            (message.state === 'indeterminate' ||
+              message.state === 'preload') && <LoadingDots />}
           <div className="flex-1 space-y-2 overflow-hidden mt-0.5">
             {message.role === 'assistant' && message.state === 'cancelled' && (
               <p className="text-muted-foreground text-xs mt-1">

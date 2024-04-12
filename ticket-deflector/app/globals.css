@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
+    --background: 60 9% 98%;
     --foreground: 0 0% 3.9%;
 
     --card: 0 0% 100%;
@@ -19,7 +19,7 @@
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
 
-    --muted: 0 0% 96.1%;
+    --muted: 60 5% 96%;
     --muted-foreground: 0 0% 45.1%;
 
     --accent: 0 0% 96.1%;
@@ -74,5 +74,47 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.loading-dots {
+  display: inline-flex;
+  align-items: center;
+  margin-left: -1.5px;
+}
+
+.loading-dots span {
+  @apply bg-stone-500;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  display: inline-block;
+  margin: 0 1.5px;
+}
+
+.loading-dots span:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-of-type(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+  50% {
+    opacity: 0.2;
+    transform: translateY(-1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(1px);
   }
 }

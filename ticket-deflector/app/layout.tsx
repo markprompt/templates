@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
 import '@/app/globals.css';
 import Link from 'next/link';
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased p-8',
+          'min-h-screen bg-background font-sans antialiased px-8 py-4',
           fontSans.variable,
           fontMono.variable,
         )}
@@ -59,12 +60,34 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <div className="flex flex-col">
-            <Link
-              className="place-self-end -mt-4 md:-mr-4 md:mb-2 mb-4 hover:opacity-50 transition"
-              href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
-            >
-              <Icons.github className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-row gap-3 items-center pb-4">
+              {process.env.NEXT_PUBLIC_LOGO_ID && (
+                <Link
+                  className="flex-none hover:opacity-50 transition"
+                  href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
+                >
+                  <img
+                    className="w-6 h-6"
+                    src={`/icons/${process.env.NEXT_PUBLIC_LOGO_ID}.svg`}
+                    alt="Logo"
+                  />
+                </Link>
+              )}
+              {process.env.NEXT_PUBLIC_TITLE && (
+                <p className="font-medium text-sm">
+                  {process.env.NEXT_PUBLIC_TITLE}
+                </p>
+              )}
+              <div className="flex-grow" />
+              {process.env.NEXT_PUBLIC_SHOW_GITHUB === 'true' && (
+                <Link
+                  className="hover:opacity-50 transition"
+                  href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
+                >
+                  <Icons.github className="w-5 h-5" />
+                </Link>
+              )}
+            </div>
             <main className="flex flex-col flex-1 bg-muted/50 mx-auto max-w-screen-md w-full">
               {children}
             </main>

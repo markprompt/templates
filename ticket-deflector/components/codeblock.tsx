@@ -92,14 +92,14 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
   };
 
   return (
-    <div className="relative w-full font-sans bg-neutral-950">
-      <div className="flex items-center justify-between w-full px-6 py-1 pr-4 bg-neutral-900 text-neutral-100">
+    <div className="relative w-full font-sans bg-stone-950">
+      <div className="flex items-center justify-between w-full px-6 py-1 pr-4 bg-stone-900 text-stone-100">
         <span className="font-mono text-xs lowercase">{language}</span>
         <div className="flex items-center space-x-1">
           <Button
             size="sm"
             variant="ghost"
-            className="hover:bg-neutral-800 hover:text-white px-2"
+            className="hover:bg-stone-800 hover:text-white px-2"
             onClick={downloadAsFile}
           >
             <Icons.download className="w-5 h-5" />
@@ -108,7 +108,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
           <Button
             size="sm"
             variant="ghost"
-            className="hover:bg-neutral-800 hover:text-white px-2"
+            className="hover:bg-stone-800 hover:text-white px-2"
             onClick={onCopy}
           >
             {isCopied ? (
