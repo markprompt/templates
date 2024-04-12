@@ -120,9 +120,10 @@ export function Chat({
               cta={isChatting ? 'Send' : 'Ask AI'}
             />
           </div>
-          {process.env.NEXT_PUBLIC_FOOTER && !isChatting && (
+          {!isChatting && (
             <p className="mt-3 text-xs text-muted-foreground -mb-3">
-              {process.env.NEXT_PUBLIC_FOOTER}
+              {process.env.NEXT_PUBLIC_FOOTER ||
+                'Try to ask: how do I add Markprompt to my website? Or: I need to speak with someone.'}
             </p>
           )}
         </CardContent>
