@@ -75,24 +75,30 @@ export function MessageActions({
       <div className="flex-none flex flex-row items-center space-x-1">
         <Button
           variant="ghost"
-          className={cn('text-muted-foreground', {
+          className={cn('text-muted-foreground group', {
             'bg-neutral-100 text-neutral-900': vote === '1',
           })}
           size="icon"
           onClick={() => onVote('1')}
         >
-          <Icons.thumbUp strokeWidth={1.8} className="w-[18px] h-[18px]" />
+          <Icons.thumbUp
+            strokeWidth={1.8}
+            className="w-[18px] h-[18px] group-hover:-rotate-12 transition transform group-hover:translate-y-[-2px]"
+          />
           <span className="sr-only">Thumb up</span>
         </Button>
         <Button
           variant="ghost"
-          className={cn('text-muted-foreground', {
+          className={cn('text-muted-foreground group', {
             'bg-neutral-100 text-neutral-900': vote === '-1',
           })}
           size="icon"
           onClick={() => onVote('-1')}
         >
-          <Icons.thumbDown strokeWidth={1.8} className="w-[18px] h-[18px]" />
+          <Icons.thumbDown
+            strokeWidth={1.8}
+            className="w-[18px] h-[18px] group-hover:-rotate-12 group-hover:translate-y-[2px] transition transform"
+          />
           <span className="sr-only">Thumb down</span>
         </Button>
         <Button

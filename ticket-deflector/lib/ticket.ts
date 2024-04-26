@@ -2,28 +2,28 @@ import { ChatViewMessage } from '@markprompt/react';
 
 import { TicketGeneratedData } from '@/components/case-form';
 import { submitChat } from '@/lib/common';
-import { CATEGORIES, SEVERITY } from '@/lib/constants';
+import { CATEGORIES, PRODUCTS, SEVERITY } from '@/lib/constants';
 
-const generate = async (
-  messages: ChatViewMessage[],
-  instructions: string,
-  systemPrompt: string,
-) => {
+const generate = async (messages: ChatViewMessage[], systemPrompt: string) => {
   let content = '';
+  const conversation = messages
+    .filter(
+      (m) =>
+        (m.role === 'user' || m.role === 'assistant') &&
+        m.content &&
+        m.content.length > 0,
+    )
+    .map((m) => {
+      return `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`;
+    })
+    .join('\n\n------------------------\n\n');
+
   await submitChat(
     [
-      ...messages
-        .filter(
-          (m) =>
-            (m.role === 'user' || m.role === 'assistant') &&
-            m.content &&
-            m.content.length > 0,
-        )
-        .map((m) => ({
-          content: m.content || '',
-          role: m.role as 'user' | 'assistant',
-        })),
-      { role: 'user', content: instructions },
+      {
+        role: 'user',
+        content: `Customer support conversation:\n\n${conversation}`,
+      },
     ],
     systemPrompt,
     'gpt-3.5-turbo',
@@ -36,45 +36,49 @@ const generate = async (
 };
 
 export const summarize = async (messages: ChatViewMessage[]) => {
-  const instructions =
-    'Above is a conversation between a customer and an AI. Please summarize it in a single sentence to use for a subject matter. Do not add surrounding quotes or any other content, such as a "Subject" prefix. Subject matter:';
-  return generate(
-    messages,
-    instructions,
-    'You are a customer support agent, expert at summarization.',
-  );
+  const systemPrompt = `- Prompt: Given the transcript of a customer support conversation, generate a concise and relevant email subject line that captures the essence of the issue discussed.
+- Output: A single string that is a succinct and informative email subject line, which reflects the main issue or resolution discussed in the conversation.
+- Constraints:
+  - The subject line should be no more than 75 characters long.
+  - It should be specific enough to inform the recipient of the email about the key issue discussed.
+  - Avoid jargon and keep the language simple and direct. Do not decorate the output, do not add quotes or prefixes.`;
+  const text = await generate(messages, systemPrompt);
+  return text
+    .trim()
+    .replace(/^["'](.*)["']$/, '$1')
+    .replace(/^subject:/gi, '')
+    .trim();
 };
 
-export const getCategory = async (messages: ChatViewMessage[]) => {
-  const instructions = `Above is a conversation between a customer and an AI. Based on this message, your task is to assign the conversation to one of the following categories. You should reply only with the category, and should not add any extra text to the response:\n\n${CATEGORIES.map(
-    (c) => `- ${c}`,
-  ).join('\n')}`;
+export const getCategory = async (
+  messages: ChatViewMessage[],
+  categories: string[],
+) => {
+  const c = categories.map((c) => `- ${c}`).join('\n');
   return generate(
     messages,
-    instructions,
-    'You are a customer support agent, expert at categorization.',
+    `- Prompt: Given the transcript of a customer support conversation, assign the conversation to one of the following categories. You should reply only with the category, and should not add any extra text to the response:\n\n${c}`,
   );
 };
 
 export const getSeverity = async (messages: ChatViewMessage[]) => {
-  const instructions = `Above is a conversation between a customer and an AI. Based on this message, your task is to assign the conversation to one of the following severity levels. Severity 1 is highest. You should reply only with the severity level, and should not add any extra text to the response:\n\n${SEVERITY.map(
-    (c) => `- ${c}`,
-  ).join('\n')}`;
+  const severities = SEVERITY.map((c) => `- ${c}`).join('\n');
   return generate(
     messages,
-    instructions,
-    'You are a customer support agent, expert at categorization.',
+    `Prompt: Given the transcript of a customer support conversation, assign the conversation to one of the following severity levels. You should reply only with the severity level, and should not add any extra text to the response:\n\n${severities}`,
   );
 };
 
 export const improve = async (messages: ChatViewMessage[]) => {
-  const instructions = `Above is a conversation between a customer and an AI. Please rewrite it into a concise message with all available information and no typos. Also follow these instructions:
+  return generate(
+    messages,
+    `Prompt: Given the transcript of a customer support conversation, rewrite it into a concise message with all available information and no typos. Also follow these instructions:
 
-- Rewrite it so that a support agent can immediately see what is going on.
-- Make sure to not omit any parts of the question.
-- Rewrite it in English if the conversation is in another language.
-- Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`;
-  return generate(messages, instructions, 'You are a customer support agent.');
+  - Rewrite it so that a support agent can immediately see what is going on.
+  - Make sure to not omit any parts of the question.
+  - Rewrite it in English if the conversation is in another language.
+  - Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`,
+  );
 };
 
 export const generateTicketData = async (
@@ -85,28 +89,36 @@ export const generateTicketData = async (
     return;
   }
 
-  const getCategoryPromise = getCategory(messages);
+  const getCategoryPromise = getCategory(messages, CATEGORIES);
+  const getProductPromise = getCategory(messages, PRODUCTS);
   const getSeverityPromise = getSeverity(messages);
   const summarizePromise = summarize(messages);
   const improvePromise = improve(messages);
 
   // Run the 4 tasks concurrently for faster ticket generation
-  const [category, severity, subject, description] = await Promise.all([
-    getCategoryPromise,
-    getSeverityPromise,
-    summarizePromise,
-    improvePromise,
-  ]);
+  const [category, product, severity, subject, description] = await Promise.all(
+    [
+      getCategoryPromise,
+      getProductPromise,
+      getSeverityPromise,
+      summarizePromise,
+      improvePromise,
+    ],
+  );
 
   const transcript = messages
     .filter((m) => !m.tool_calls)
-    .map((m) => `${m.role}:${m.content || 'No answer'}`)
-    .join(`\n\n${'-'.repeat(80)}\n\n`);
+    .map(
+      (m) =>
+        `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content || 'No answer'}`,
+    )
+    .join(`\n${'-'.repeat(40)}\n`);
 
   return {
     category,
+    product,
     severity,
     subject,
-    description: `${description}\n\n${'='.repeat(80)}\nFull transcript:\n\n${transcript}`,
+    description: `${description}\n\n----- FULL TRANSCRIPT -----\n\n${transcript}`,
   };
 };
