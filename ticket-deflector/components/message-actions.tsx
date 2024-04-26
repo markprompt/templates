@@ -14,11 +14,13 @@ import { Icons } from './icons';
 
 interface MessageActionsProps extends React.ComponentProps<'div'> {
   message: ChatViewMessage;
+  isLast: boolean;
 }
 
 export function MessageActions({
   message,
   className,
+  isLast,
   ...props
 }: MessageActionsProps) {
   const projectKey = useChatStore((state) => state.projectKey);
@@ -51,7 +53,7 @@ export function MessageActions({
   return (
     <div className={cn('flex flex-row', className)} {...props}>
       <div className="flex-grow pt-1">
-        {uniqueReferences.length > 0 && (
+        {isLast && uniqueReferences.length > 0 && (
           <>
             <h4 className="text-sm font-semibold">References</h4>
             <ul className="mt-3 flex flex-col gap-y-1 w-full justify-start items-start">
@@ -72,10 +74,14 @@ export function MessageActions({
           </>
         )}
       </div>
-      <div className="flex-none flex flex-row items-center space-x-1">
+      <div
+        className={cn('flex-none flex flex-row items-center space-x-1', {
+          'opacity-0 group-hover:opacity-100 transition': !isLast,
+        })}
+      >
         <Button
           variant="ghost"
-          className={cn('text-muted-foreground group', {
+          className={cn('text-muted-foreground group/thumbup', {
             'bg-neutral-100 text-neutral-900': vote === '1',
           })}
           size="icon"
@@ -83,13 +89,13 @@ export function MessageActions({
         >
           <Icons.thumbUp
             strokeWidth={1.8}
-            className="w-[18px] h-[18px] group-hover:-rotate-12 transition transform group-hover:translate-y-[-2px]"
+            className="w-[18px] h-[18px] group-hover/thumbup:-rotate-12 transition transform group-hover/thumbup:translate-y-[-2px]"
           />
           <span className="sr-only">Thumb up</span>
         </Button>
         <Button
           variant="ghost"
-          className={cn('text-muted-foreground group', {
+          className={cn('text-muted-foreground group/thumbdown', {
             'bg-neutral-100 text-neutral-900': vote === '-1',
           })}
           size="icon"
@@ -97,7 +103,7 @@ export function MessageActions({
         >
           <Icons.thumbDown
             strokeWidth={1.8}
-            className="w-[18px] h-[18px] group-hover:-rotate-12 group-hover:translate-y-[2px] transition transform"
+            className="w-[18px] h-[18px] group-hover/thumbdown:-rotate-12 group-hover/thumbdown:translate-y-[2px] transition transform"
           />
           <span className="sr-only">Thumb down</span>
         </Button>

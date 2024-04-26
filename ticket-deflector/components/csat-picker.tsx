@@ -1,5 +1,9 @@
 import { DEFAULT_OPTIONS } from '@markprompt/core';
-import { MarkpromptOptions } from '@markprompt/react';
+import {
+  MarkpromptOptions,
+  useChatStore,
+  useFeedback,
+} from '@markprompt/react';
 import {
   type ReactElement,
   type ComponentPropsWithoutRef,
@@ -33,16 +37,19 @@ function getHeading(csat: CSAT): string | undefined {
   return undefined;
 }
 
-export function CSATPicker(props: CSATPickerProps): ReactElement {
-  const { csat = 0, projectKey, apiUrl, threadId, feedbackOptions } = props;
+export function CSATPicker({
+  csat = 0,
+  threadId,
+  feedbackOptions,
+}: CSATPickerProps): ReactElement {
+  const projectKey = useChatStore((state) => state.projectKey);
   const [tempValue, setTempValue] = useState<CSAT>(csat);
   const [permanentValue, setPermanentValue] = useState<CSAT>(csat);
   const [isHovering, setIsHovering] = useState(false);
 
   const { submitThreadCSAT } = useFeedback({
-    apiUrl: apiUrl || DEFAULT_OPTIONS.apiUrl,
+    apiUrl: process.env.NEXT_PUBLIC_API_URL,
     projectKey,
-    feedbackOptions,
   });
 
   const submitCSAT = useCallback(

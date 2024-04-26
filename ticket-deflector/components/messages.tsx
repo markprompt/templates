@@ -22,6 +22,7 @@ export function Messages() {
             isLoading={
               isLoading && i === messages.length - 1 && message.role !== 'user'
             }
+            isLast={i === messages.length - 1}
             key={message.id}
             message={message}
             chatOptions={chatOptions}
