@@ -4,8 +4,8 @@ import * as React from 'react';
 import { Message } from './message';
 
 export function Messages() {
+  const conversationId = useChatStore((state) => state.conversationId);
   const messages = useChatStore((state) => state.messages);
-
   const chatOptions = useChatStore((state) => state.options);
   const messageState = useChatStore(
     (state) => state.messages[state.messages.length - 1]?.state,
@@ -21,8 +21,10 @@ export function Messages() {
             isLoading={
               isLoading && i === messages.length - 1 && message.role !== 'user'
             }
+            isLast={i === messages.length - 1}
             key={message.id}
             message={message}
+            threadId={conversationId}
             chatOptions={chatOptions}
           />
         );

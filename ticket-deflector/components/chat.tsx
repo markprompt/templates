@@ -19,6 +19,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { useChatForm } from './chat-form-context';
+import { MemoizedReactMarkdown } from './markdown';
 
 const CaseCreationButton = ({ onSubmitCase }: { onSubmitCase: () => void }) => {
   const { isCreatingCase } = useChatForm();
@@ -121,10 +122,10 @@ export function Chat({
             />
           </div>
           {!isChatting && (
-            <p className="mt-3 text-xs text-muted-foreground -mb-3">
+            <MemoizedReactMarkdown className="mt-3 text-xs text-muted-foreground -mb-3 prose max-w-full">
               {process.env.NEXT_PUBLIC_FOOTER ||
                 'Try to ask: how do I add Markprompt to my website? Or: I need to speak with someone.'}
-            </p>
+            </MemoizedReactMarkdown>
           )}
         </CardContent>
       </div>

@@ -19,7 +19,9 @@ import { ToolCallsConfirmation } from './tool-calls-confirmation';
 
 export interface MessageProps {
   message: ChatViewMessage;
+  threadId: string | undefined;
   isLoading: boolean;
+  isLast: boolean;
   chatOptions: MarkpromptOptions['chat'];
 }
 
@@ -37,7 +39,9 @@ const LoadingDots = () => {
 
 export function Message({
   message,
+  threadId,
   isLoading,
+  isLast,
   chatOptions,
   ...props
 }: MessageProps) {
@@ -66,7 +70,7 @@ export function Message({
   );
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-1 group">
       <div
         className={cn('group relative space-x-4 flex flex-row items-start')}
         {...props}
@@ -136,8 +140,12 @@ export function Message({
       {message.state === 'done' &&
         message.role === 'assistant' &&
         !toolCalls && (
-          <div className="ml-11 pb-8">
-            <MessageActions message={message} />
+          <div className="ml-11 pb-1">
+            <MessageActions
+              message={message}
+              threadId={threadId}
+              isLast={isLast}
+            />
           </div>
         )}
     </div>

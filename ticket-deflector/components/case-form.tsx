@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { CATEGORIES, SEVERITY } from '@/lib/constants';
+import { CATEGORIES, PRODUCTS, SEVERITY } from '@/lib/constants';
 
 import {
   Select,
@@ -47,13 +47,12 @@ type TicketFormValues = z.infer<typeof ticketFormSchema>;
 
 export type TicketGeneratedData = Pick<
   TicketFormValues,
-  'category' | 'severity' | 'subject' | 'description'
+  'category' | 'product' | 'severity' | 'subject' | 'description'
 >;
 
 const defaultValues: Partial<TicketFormValues> = {
   account: 'alicia@acme.com',
   product: 'web',
-  project: 'dashboard',
 };
 
 export function CaseForm(generatedData: TicketGeneratedData) {
@@ -108,59 +107,37 @@ export function CaseForm(generatedData: TicketGeneratedData) {
                 )}
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 my-4">
-                <FormField
-                  control={form.control}
-                  name="product"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        What product are you having problems with?
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a product" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="platform">Platform</SelectItem>
-                          <SelectItem value="web">Web app</SelectItem>
-                          <SelectItem value="mobile">Mobile app</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="project"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>What project is affected?</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a project" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="dashboard">
-                            Acme Dashboard
-                          </SelectItem>
-                          <SelectItem value="api">Acme API</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="col-span-2">
+                  <FormField
+                    control={form.control}
+                    name="product"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          What product are you having problems with?
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a product" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {PRODUCTS.map((c) => (
+                              <SelectItem key={c} value={c}>
+                                {c}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
                   name="category"
