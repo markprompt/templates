@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
 import '@/app/globals.css';
+import '@markprompt/css';
 import Link from 'next/link';
 
 import { Icons } from '@/components/icons';

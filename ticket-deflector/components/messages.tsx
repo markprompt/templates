@@ -6,8 +6,6 @@ import { Message } from './message';
 export function Messages() {
   const conversationId = useChatStore((state) => state.conversationId);
   const messages = useChatStore((state) => state.messages);
-
-  console.log('messages', JSON.stringify(messages, null, 2));
   const chatOptions = useChatStore((state) => state.options);
   const messageState = useChatStore(
     (state) => state.messages[state.messages.length - 1]?.state,

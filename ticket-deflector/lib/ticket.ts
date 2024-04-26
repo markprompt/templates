@@ -73,11 +73,12 @@ export const improve = async (messages: ChatViewMessage[]) => {
   return generate(
     messages,
     `Prompt: Given the transcript of a customer support conversation, rewrite it into a concise message with all available information and no typos. Also follow these instructions:
-
-  - Rewrite it so that a support agent can immediately see what is going on.
-  - Make sure to not omit any parts of the question.
-  - Rewrite it in English if the conversation is in another language.
-  - Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`,
+  - Output: A synthesized version of the conversation, explaining what problem the user has been facing, or what questions they have.
+  - Constraints:
+    - Rewrite it so that a support agent can immediately see what is going on.
+    - Make sure to not omit any parts of the question.
+    - Rewrite it in English if the conversation is in another language.
+    - Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`,
   );
 };
 
@@ -112,7 +113,7 @@ export const generateTicketData = async (
       (m) =>
         `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content || 'No answer'}`,
     )
-    .join(`\n${'-'.repeat(40)}\n`);
+    .join(`\n${'-'.repeat(80)}\n`);
 
   return {
     category,

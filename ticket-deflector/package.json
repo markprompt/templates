@@ -13,6 +13,7 @@
     "@floating-ui/react": "^0.26.4",
     "@hookform/resolvers": "^3.3.4",
     "@markprompt/core": "^0.27.0",
+    "@markprompt/css": "^0.29.0",
     "@markprompt/react": "^0.43.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-accessible-icon": "^1.0.3",

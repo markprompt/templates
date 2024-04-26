@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatProvider, ChatViewMessage } from '@markprompt/react';
+import { Markprompt, ChatProvider, ChatViewMessage } from '@markprompt/react';
 import { useCallback, useState } from 'react';
 
 import { type TicketGeneratedData, CaseForm } from '@/components/case-form';
@@ -34,71 +34,76 @@ export function CaseChat() {
   }, [messages, setIsCreatingCase]);
 
   return (
-    <ChatProvider
-      apiUrl={process.env.NEXT_PUBLIC_API_URL}
-      chatOptions={{
-        model: 'gpt-4-turbo-preview',
-        systemPrompt:
-          process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
-          DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
-        tool_choice: 'auto',
-        tools: [
-          {
-            tool: {
-              type: 'function',
-              function: {
-                name: 'createCase',
-                description:
-                  'Creates a case automatically when the user asks to create a ticket/case or when they ask to speak to someone.',
-                parameters: {
-                  type: 'object',
-                  properties: {},
+    <>
+      <ChatProvider
+        apiUrl={process.env.NEXT_PUBLIC_API_URL}
+        chatOptions={{
+          model: 'gpt-4-turbo-preview',
+          systemPrompt:
+            process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
+            DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
+          tool_choice: 'auto',
+          tools: [
+            {
+              tool: {
+                type: 'function',
+                function: {
+                  name: 'createCase',
+                  description:
+                    'Creates a case automatically when the user asks to create a ticket/case or when they ask to speak to someone.',
+                  parameters: {
+                    type: 'object',
+                    properties: {},
+                  },
                 },
               },
+              call: async () => {
+                submitCase();
+                return 'Generating case details for you.';
+              },
+              requireConfirmation: true,
             },
-            call: async () => {
-              submitCase();
-              return 'Generating case details for you.';
-            },
-            requireConfirmation: true,
+          ],
+          ToolCallsConfirmation: ({
+            toolCalls,
+            toolCallsStatus,
+            confirmToolCalls,
+          }) => {
+            const toolCall = toolCalls[0];
+            if (!toolCall) {
+              return <></>;
+            }
+            const status = toolCallsStatus[toolCall.id]?.status;
+            return (
+              <div className="p-3 border border-dashed border-border rounded-md flex flex-col space-y-4 items-start">
+                <p className="text-sm">
+                  Please confirm that you want to submit a case:
+                </p>
+                <Button
+                  size="sm"
+                  onClick={confirmToolCalls}
+                  disabled={status === 'done'}
+                >
+                  Confirm
+                </Button>
+              </div>
+            );
           },
-        ],
-        ToolCallsConfirmation: ({
-          toolCalls,
-          toolCallsStatus,
-          confirmToolCalls,
-        }) => {
-          const toolCall = toolCalls[0];
-          if (!toolCall) {
-            return <></>;
-          }
-          const status = toolCallsStatus[toolCall.id]?.status;
-          return (
-            <div className="p-3 border border-dashed border-border rounded-md flex flex-col space-y-4 items-start">
-              <p className="text-sm">
-                Please confirm that you want to submit a case:
-              </p>
-              <Button
-                size="sm"
-                onClick={confirmToolCalls}
-                disabled={status === 'done'}
-              >
-                Confirm
-              </Button>
-            </div>
-          );
-        },
-      }}
-      projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
-    >
-      <div className="flex flex-col space-y-4">
-        <Chat
-          onNewMessages={setMessages}
-          onSubmitCase={submitCase}
-          onNewChat={() => setTicketData(undefined)}
-        />
-        {ticketData && <CaseForm {...ticketData} />}
-      </div>
-    </ChatProvider>
+        }}
+        projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+      >
+        <div className="flex flex-col space-y-4">
+          <Chat
+            onNewMessages={setMessages}
+            onSubmitCase={submitCase}
+            onNewChat={() => setTicketData(undefined)}
+          />
+          {ticketData && <CaseForm {...ticketData} />}
+        </div>
+      </ChatProvider>
+      <Markprompt projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}>
+        Hello
+      </Markprompt>
+    </>
   );
 }
