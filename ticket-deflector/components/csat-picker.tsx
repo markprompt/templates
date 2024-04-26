@@ -60,7 +60,7 @@ export const CSATPicker = ({
 
   const tempHeading = getHeading(tempValue);
   return (
-    <div className={className}>
+    <div className={cn(className, 'csat-heading')}>
       <p className="text-xs text-stone-500 mb-1.5">
         {isHovering && tempHeading ? tempHeading : 'How helpful was this?'}
       </p>
@@ -85,8 +85,8 @@ export const CSATPicker = ({
                 submitCSAT((i + 1) as CSAT);
               }}
               key={`star-${i}`}
-              className={cn('w-[18px] h-[18px]', {
-                'stroke-stone-500': !isActive,
+              className={cn('csat-star', 'w-5 h-5', {
+                'stroke-stone-500 fill-none': !isActive,
                 'fill-amber-500 stroke-amber-500': isActive,
               })}
               data-active={isActive}

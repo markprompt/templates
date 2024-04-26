@@ -11,10 +11,8 @@ export const generateChat = async (
 ) => {
   return submitChat(
     messages,
-    process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
-      DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt! ||
-      '',
-    'gpt-4',
+    DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt!,
+    DEFAULT_SUBMIT_CHAT_OPTIONS.model,
     false,
     false,
     true,

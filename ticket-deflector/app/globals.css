@@ -68,6 +68,10 @@
   }
 }
 
+:root {
+  --markprompt-primary: #1c1917;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -104,6 +108,41 @@
   animation-delay: 0.4s;
 }
 
+.MarkpromptButton[data-variant='primary'] {
+  @apply font-medium;
+}
+
+.MarkpromptButton[data-variant='primary']:not(:disabled)::before {
+  background-image: none;
+}
+
+.csat-star,
+.csat-container .csat-heading {
+  --base-delay: 0.05s;
+
+  animation-delay: calc(var(--base-delay) * (var(--index) - 1));
+  animation-fill-mode: both;
+  animation-name: slide-up-subtle;
+  animation-duration: 500ms;
+  transition-timing-function: ease-in;
+}
+
+.csat-star:nth-child(1) {
+  --index: 1;
+}
+.csat-star:nth-child(2) {
+  --index: 2;
+}
+.csat-star:nth-child(3) {
+  --index: 3;
+}
+.csat-star:nth-child(4) {
+  --index: 4;
+}
+.csat-star:nth-child(5) {
+  --index: 5;
+}
+
 @keyframes blink {
   0% {
     opacity: 1;
@@ -116,5 +155,17 @@
   100% {
     opacity: 1;
     transform: translateY(1px);
+  }
+}
+
+@keyframes slide-up-subtle {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

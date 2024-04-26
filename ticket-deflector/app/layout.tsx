@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
-import '@/app/globals.css';
 import '@markprompt/css';
+import '@/app/globals.css';
 import Link from 'next/link';
 
 import { Icons } from '@/components/icons';
@@ -69,7 +69,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 >
                   <img
                     className="h-6"
-                    src={`/icons/${process.env.NEXT_PUBLIC_LOGO_ID}.svg`}
+                    src={`/logos/${process.env.NEXT_PUBLIC_LOGO_ID}.svg`}
                     alt="Logo"
                   />
                 </Link>

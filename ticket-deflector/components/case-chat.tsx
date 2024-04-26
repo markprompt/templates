@@ -9,6 +9,7 @@ import { DEFAULT_SUBMIT_CHAT_OPTIONS } from '@/lib/constants';
 import { generateTicketData } from '@/lib/ticket';
 
 import { useChatForm } from './chat-form-context';
+import { Icons } from './icons';
 import { Button } from './ui/button';
 
 export function CaseChat() {
@@ -38,10 +39,8 @@ export function CaseChat() {
       <ChatProvider
         apiUrl={process.env.NEXT_PUBLIC_API_URL}
         chatOptions={{
-          model: 'gpt-4-turbo-preview',
-          systemPrompt:
-            process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
-            DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
+          model: DEFAULT_SUBMIT_CHAT_OPTIONS.model,
+          systemPrompt: DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
           tool_choice: 'auto',
           tools: [
             {
@@ -101,8 +100,69 @@ export function CaseChat() {
           {ticketData && <CaseForm {...ticketData} />}
         </div>
       </ChatProvider>
-      <Markprompt projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}>
-        Hello
+      <Markprompt
+        apiUrl={process.env.NEXT_PUBLIC_API_URL}
+        projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+        chat={{
+          systemPrompt: DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
+          model: DEFAULT_SUBMIT_CHAT_OPTIONS.model,
+        }}
+        menu1={{
+          title: 'Need help?',
+          subtitle: 'Get help with setting up Acme',
+          sections: [
+            {
+              entries: [
+                {
+                  title: 'Documentation',
+                  type: 'link',
+                  href: 'https://markprompt.com/docs',
+                  iconId: 'book',
+                },
+                {
+                  title: 'Ask a question',
+                  type: 'link',
+                  iconId: 'magnifying-glass',
+                  action: 'chat',
+                },
+                {
+                  title: 'Get help',
+                  type: 'link',
+                  iconId: 'chat',
+                  action: 'ticket',
+                },
+              ],
+            },
+            {
+              heading: "What's new",
+              entries: [
+                {
+                  title: 'Changelog',
+                  type: 'link',
+                  iconId: 'newspaper',
+                  href: 'https://markprompt.com',
+                  target: '_blank',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
+                  title: 'Join Discord',
+                  type: 'button',
+                  iconId: 'discord',
+                  theme: 'purple',
+                  href: 'https://discord.com',
+                  target: '_blank',
+                },
+              ],
+            },
+          ],
+        }}
+      >
+        <button className="fixed bottom-5 right-5 rounded-full shadow-sm bg-white border border-stone-200 border-solid p-2">
+          <Icons.logo className="w-5 h-5" />
+        </button>
       </Markprompt>
     </>
   );

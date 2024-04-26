@@ -59,7 +59,7 @@ export function MessageActions({
         <div className="flex-grow pt-1">
           {isLast && uniqueReferences.length > 0 && (
             <>
-              <h4 className="text-sm font-semibold">References</h4>
+              <h4 className="mt-4 text-sm font-semibold">References</h4>
               <ul className="mt-3 flex flex-col gap-y-1 w-full justify-start items-start">
                 {uniqueReferences.map((reference) => {
                   return (
@@ -85,48 +85,52 @@ export function MessageActions({
         >
           <Button
             variant="ghost"
-            className={cn('text-muted-foreground group/thumbup', {
-              'bg-neutral-100 text-neutral-900': vote === '1',
+            className={cn('text-stone-500 group/thumbup', {
+              'bg-stone-100 text-stone-900': vote === '1',
             })}
             size="icon"
             onClick={() => onVote('1')}
           >
             <Icons.thumbUp
-              strokeWidth={1.8}
-              className="w-[18px] h-[18px] group-hover/thumbup:-rotate-12 transition transform group-hover/thumbup:translate-y-[-2px]"
+              strokeWidth={2}
+              className="w-4 h-4 group-hover/thumbup:-rotate-12 transition transform group-hover/thumbup:translate-y-[-2px]"
             />
             <span className="sr-only">Thumb up</span>
           </Button>
           <Button
             variant="ghost"
-            className={cn('text-muted-foreground group/thumbdown', {
-              'bg-neutral-100 text-neutral-900': vote === '-1',
+            className={cn('text-stone-500 group/thumbdown', {
+              'bg-stone-100 text-stone-900': vote === '-1',
             })}
             size="icon"
             onClick={() => onVote('-1')}
           >
             <Icons.thumbDown
-              strokeWidth={1.8}
-              className="w-[18px] h-[18px] group-hover/thumbdown:-rotate-12 group-hover/thumbdown:translate-y-[2px] transition transform"
+              strokeWidth={2}
+              className="w-4 h-4 group-hover/thumbdown:-rotate-12 group-hover/thumbdown:translate-y-[2px] transition transform"
             />
             <span className="sr-only">Thumb down</span>
           </Button>
           <Button
             variant="ghost"
-            className="text-muted-foreground"
+            className="text-stone-500"
             size="icon"
             onClick={onCopy}
           >
             {isCopied ? (
-              <Icons.check strokeWidth={1.8} className="w-[18px] h-[18px]" />
+              <Icons.check strokeWidth={2} className="w-4 h-4" />
             ) : (
-              <Icons.copy strokeWidth={1.8} className="w-[18px] h-[18px]" />
+              <Icons.copy strokeWidth={2} className="w-4 h-4" />
             )}
             <span className="sr-only">Copy message</span>
           </Button>
         </div>
       </div>
-      {isLast && <CSATPicker threadId={threadId} className="mt-6" />}
+      {isLast && (
+        <div className="csat-container">
+          <CSATPicker threadId={threadId} className="mt-6" />
+        </div>
+      )}
     </div>
   );
 }
