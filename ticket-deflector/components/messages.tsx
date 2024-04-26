@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Message } from './message';
 
 export function Messages() {
+  const conversationId = useChatStore((state) => state.conversationId);
   const messages = useChatStore((state) => state.messages);
 
   console.log('messages', JSON.stringify(messages, null, 2));
@@ -25,6 +26,7 @@ export function Messages() {
             isLast={i === messages.length - 1}
             key={message.id}
             message={message}
+            threadId={conversationId}
             chatOptions={chatOptions}
           />
         );

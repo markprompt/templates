@@ -10,15 +10,18 @@ import { Button } from '@/components/ui/button';
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import { cn } from '@/lib/utils';
 
+import { CSATPicker } from './csat-picker';
 import { Icons } from './icons';
 
 interface MessageActionsProps extends React.ComponentProps<'div'> {
   message: ChatViewMessage;
+  threadId: string | undefined;
   isLast: boolean;
 }
 
 export function MessageActions({
   message,
+  threadId,
   className,
   isLast,
   ...props
@@ -51,76 +54,79 @@ export function MessageActions({
   }, [message.references]);
 
   return (
-    <div className={cn('flex flex-row', className)} {...props}>
-      <div className="flex-grow pt-1">
-        {isLast && uniqueReferences.length > 0 && (
-          <>
-            <h4 className="text-sm font-semibold">References</h4>
-            <ul className="mt-3 flex flex-col gap-y-1 w-full justify-start items-start">
-              {uniqueReferences.map((reference) => {
-                return (
-                  <Link
-                    className="text-sm border-b border-dashed border-border"
-                    key={reference.file.path}
-                    href={reference.file.path}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {reference.file.title}
-                  </Link>
-                );
-              })}
-            </ul>
-          </>
-        )}
-      </div>
-      <div
-        className={cn('flex-none flex flex-row items-center space-x-1', {
-          'opacity-0 group-hover:opacity-100 transition': !isLast,
-        })}
-      >
-        <Button
-          variant="ghost"
-          className={cn('text-muted-foreground group/thumbup', {
-            'bg-neutral-100 text-neutral-900': vote === '1',
-          })}
-          size="icon"
-          onClick={() => onVote('1')}
-        >
-          <Icons.thumbUp
-            strokeWidth={1.8}
-            className="w-[18px] h-[18px] group-hover/thumbup:-rotate-12 transition transform group-hover/thumbup:translate-y-[-2px]"
-          />
-          <span className="sr-only">Thumb up</span>
-        </Button>
-        <Button
-          variant="ghost"
-          className={cn('text-muted-foreground group/thumbdown', {
-            'bg-neutral-100 text-neutral-900': vote === '-1',
-          })}
-          size="icon"
-          onClick={() => onVote('-1')}
-        >
-          <Icons.thumbDown
-            strokeWidth={1.8}
-            className="w-[18px] h-[18px] group-hover/thumbdown:-rotate-12 group-hover/thumbdown:translate-y-[2px] transition transform"
-          />
-          <span className="sr-only">Thumb down</span>
-        </Button>
-        <Button
-          variant="ghost"
-          className="text-muted-foreground"
-          size="icon"
-          onClick={onCopy}
-        >
-          {isCopied ? (
-            <Icons.check strokeWidth={1.8} className="w-[18px] h-[18px]" />
-          ) : (
-            <Icons.copy strokeWidth={1.8} className="w-[18px] h-[18px]" />
+    <div className={cn('flex flex-col', className)} {...props}>
+      <div className="flex flex-row">
+        <div className="flex-grow pt-1">
+          {isLast && uniqueReferences.length > 0 && (
+            <>
+              <h4 className="text-sm font-semibold">References</h4>
+              <ul className="mt-3 flex flex-col gap-y-1 w-full justify-start items-start">
+                {uniqueReferences.map((reference) => {
+                  return (
+                    <Link
+                      className="text-sm border-b border-dashed border-border"
+                      key={reference.file.path}
+                      href={reference.file.path}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {reference.file.title}
+                    </Link>
+                  );
+                })}
+              </ul>
+            </>
           )}
-          <span className="sr-only">Copy message</span>
-        </Button>
+        </div>
+        <div
+          className={cn('flex-none flex flex-row items-center space-x-1', {
+            'opacity-0 group-hover:opacity-100 transition': !isLast,
+          })}
+        >
+          <Button
+            variant="ghost"
+            className={cn('text-muted-foreground group/thumbup', {
+              'bg-neutral-100 text-neutral-900': vote === '1',
+            })}
+            size="icon"
+            onClick={() => onVote('1')}
+          >
+            <Icons.thumbUp
+              strokeWidth={1.8}
+              className="w-[18px] h-[18px] group-hover/thumbup:-rotate-12 transition transform group-hover/thumbup:translate-y-[-2px]"
+            />
+            <span className="sr-only">Thumb up</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={cn('text-muted-foreground group/thumbdown', {
+              'bg-neutral-100 text-neutral-900': vote === '-1',
+            })}
+            size="icon"
+            onClick={() => onVote('-1')}
+          >
+            <Icons.thumbDown
+              strokeWidth={1.8}
+              className="w-[18px] h-[18px] group-hover/thumbdown:-rotate-12 group-hover/thumbdown:translate-y-[2px] transition transform"
+            />
+            <span className="sr-only">Thumb down</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-muted-foreground"
+            size="icon"
+            onClick={onCopy}
+          >
+            {isCopied ? (
+              <Icons.check strokeWidth={1.8} className="w-[18px] h-[18px]" />
+            ) : (
+              <Icons.copy strokeWidth={1.8} className="w-[18px] h-[18px]" />
+            )}
+            <span className="sr-only">Copy message</span>
+          </Button>
+        </div>
       </div>
+      {isLast && <CSATPicker threadId={threadId} className="mt-6" />}
     </div>
   );
 }

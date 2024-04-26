@@ -1,27 +1,20 @@
-import { DEFAULT_OPTIONS } from '@markprompt/core';
-import {
-  MarkpromptOptions,
-  useChatStore,
-  useFeedback,
-} from '@markprompt/react';
-import {
-  type ReactElement,
-  type ComponentPropsWithoutRef,
-  useState,
-  useCallback,
-} from 'react';
+import { useChatStore, useFeedback } from '@markprompt/react';
+import { type ComponentPropsWithoutRef, useState, useCallback } from 'react';
+import { toast } from 'sonner';
+
+import { cn } from '@/lib/utils';
+
+import { Icons } from './icons';
 
 export type CSAT = 0 | 1 | 2 | 3 | 4 | 5;
 
 interface CSATPickerProps extends ComponentPropsWithoutRef<'aside'> {
-  apiUrl?: string;
-  projectKey: string;
-  threadId: string;
+  threadId: string | undefined;
   csat?: CSAT;
-  feedbackOptions: NonNullable<MarkpromptOptions['feedback']>;
+  className?: string;
 }
 
-function getHeading(csat: CSAT): string | undefined {
+const getHeading = (csat: CSAT): string | undefined => {
   switch (csat) {
     case 1:
       return 'Very unhelpful';
@@ -35,13 +28,13 @@ function getHeading(csat: CSAT): string | undefined {
       return 'Very helpful';
   }
   return undefined;
-}
+};
 
-export function CSATPicker({
+export const CSATPicker = ({
   csat = 0,
   threadId,
-  feedbackOptions,
-}: CSATPickerProps): ReactElement {
+  className,
+}: CSATPickerProps) => {
   const projectKey = useChatStore((state) => state.projectKey);
   const [tempValue, setTempValue] = useState<CSAT>(csat);
   const [permanentValue, setPermanentValue] = useState<CSAT>(csat);
@@ -54,19 +47,22 @@ export function CSATPicker({
 
   const submitCSAT = useCallback(
     (value: CSAT) => {
+      if (!threadId) {
+        return;
+      }
       setTempValue(value);
       setPermanentValue(value);
       submitThreadCSAT(threadId, value);
+      toast.success('Thank you!');
     },
     [submitThreadCSAT, threadId],
   );
 
+  const tempHeading = getHeading(tempValue);
   return (
-    <>
-      <p className="MarkpromptMessageSectionHeading">
-        {isHovering
-          ? getHeading(tempValue) || feedbackOptions.headingCSAT
-          : feedbackOptions.headingCSAT}
+    <div className={className}>
+      <p className="text-xs text-stone-500 mb-1.5">
+        {isHovering && tempHeading ? tempHeading : 'How helpful was this?'}
       </p>
       <div
         onMouseEnter={() => {
@@ -81,7 +77,7 @@ export function CSATPicker({
         {Array.from(Array(5).keys()).map((_, i) => {
           const isActive = i + 1 <= tempValue;
           return (
-            <StarIcon
+            <Icons.star
               onMouseEnter={() => {
                 setTempValue((i + 1) as CSAT);
               }}
@@ -89,13 +85,15 @@ export function CSATPicker({
                 submitCSAT((i + 1) as CSAT);
               }}
               key={`star-${i}`}
-              className="MarkpromptMessageCSATStar"
+              className={cn('w-[18px] h-[18px]', {
+                'stroke-stone-500': !isActive,
+                'fill-amber-500 stroke-amber-500': isActive,
+              })}
               data-active={isActive}
-              fill={isActive ? 'var(--markprompt-star-active)' : 'none'}
             />
           );
         })}
       </div>
-    </>
+    </div>
   );
-}
+};
