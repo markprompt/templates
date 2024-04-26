@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { Markprompt, ChatProvider, ChatViewMessage } from '@markprompt/react';
@@ -5,7 +6,11 @@ import { useCallback, useState } from 'react';
 
 import { type TicketGeneratedData, CaseForm } from '@/components/case-form';
 import { Chat } from '@/components/chat';
-import { DEFAULT_SUBMIT_CHAT_OPTIONS } from '@/lib/constants';
+import {
+  CHAT_DEFAULT_PROMPTS,
+  CHAT_WELCOME_MESSAGE,
+  DEFAULT_SUBMIT_CHAT_OPTIONS,
+} from '@/lib/constants';
 import { generateTicketData } from '@/lib/ticket';
 
 import { useChatForm } from './chat-form-context';
@@ -103,13 +108,22 @@ export function CaseChat() {
       <Markprompt
         apiUrl={process.env.NEXT_PUBLIC_API_URL}
         projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+        branding={{ show: false }}
         chat={{
           systemPrompt: DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
           model: DEFAULT_SUBMIT_CHAT_OPTIONS.model,
+          defaultView: {
+            message: CHAT_WELCOME_MESSAGE,
+            prompts: CHAT_DEFAULT_PROMPTS,
+          },
+          avatars: {
+            user: '/avatars/user.png',
+            assistant: () => (
+              <Icons.logo className="w-[18px] h-[18px] text-black ml-[-1.5px]" />
+            ),
+          },
         }}
-        menu1={{
-          title: 'Need help?',
-          subtitle: 'Get help with setting up Acme',
+        menu={{
           sections: [
             {
               entries: [
@@ -120,26 +134,45 @@ export function CaseChat() {
                   iconId: 'book',
                 },
                 {
-                  title: 'Ask a question',
+                  title: 'Help center',
                   type: 'link',
+                  href: 'https://markprompt.com/docs',
                   iconId: 'magnifying-glass',
-                  action: 'chat',
                 },
-                {
-                  title: 'Get help',
-                  type: 'link',
-                  iconId: 'chat',
-                  action: 'ticket',
-                },
-              ],
-            },
-            {
-              heading: "What's new",
-              entries: [
                 {
                   title: 'Changelog',
                   type: 'link',
                   iconId: 'newspaper',
+                  href: 'https://markprompt.com',
+                  target: '_blank',
+                },
+                {
+                  title: 'Contact sales',
+                  type: 'link',
+                  iconId: 'chat',
+                  href: 'https://markprompt.com',
+                  target: '_blank',
+                },
+              ],
+            },
+            {
+              heading: 'Follow us',
+              entries: [
+                {
+                  title: 'Twitter',
+                  type: 'link',
+                  href: 'https://twitter.com',
+                  target: '_blank',
+                },
+                {
+                  title: 'Discord',
+                  type: 'link',
+                  href: 'https://discord.com',
+                  target: '_blank',
+                },
+                {
+                  title: 'Status',
+                  type: 'link',
                   href: 'https://markprompt.com',
                   target: '_blank',
                 },
@@ -148,22 +181,16 @@ export function CaseChat() {
             {
               entries: [
                 {
-                  title: 'Join Discord',
+                  title: 'Ask a question',
                   type: 'button',
-                  iconId: 'discord',
-                  theme: 'purple',
-                  href: 'https://discord.com',
-                  target: '_blank',
+                  iconId: 'sparkles',
+                  action: 'chat',
                 },
               ],
             },
           ],
         }}
-      >
-        <button className="fixed bottom-5 right-5 rounded-full shadow-sm bg-white border border-stone-200 border-solid p-2">
-          <Icons.logo className="w-5 h-5" />
-        </button>
-      </Markprompt>
+      />
     </>
   );
 }

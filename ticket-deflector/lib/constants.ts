@@ -26,3 +26,14 @@ export const PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS?.split(',') ?? [
 ];
 
 export const SEVERITY = ['Low', 'Medium', 'High', 'Urgent', 'Critical'];
+
+export const CHAT_WELCOME_MESSAGE =
+  process.env.NEXT_PUBLIC_CHAT_WELCOME_MESSAGE ||
+  "Hello, I'm an AI assistant from Acme";
+
+export const CHAT_DEFAULT_PROMPTS =
+  process.env.NEXT_PUBLIC_CHAT_DEFAULT_PROMPTS?.split(',') || [
+    'What is Markprompt?',
+    'How do I setup the React component?',
+    'Do you have a REST API?',
+  ];
