@@ -4,14 +4,28 @@ import { TicketGeneratedData } from '@/components/case-form';
 import { submitChat } from '@/lib/common';
 import { CATEGORIES, SEVERITY } from '@/lib/constants';
 
-const generate = async (message: string, instructions: string) => {
+const generate = async (
+  messages: ChatViewMessage[],
+  instructions: string,
+  systemPrompt: string,
+) => {
   let content = '';
   await submitChat(
     [
+      ...messages
+        .filter(
+          (m) =>
+            (m.role === 'user' || m.role === 'assistant') &&
+            m.content &&
+            m.content.length > 0,
+        )
+        .map((m) => ({
+          content: m.content || '',
+          role: m.role as 'user' | 'assistant',
+        })),
       { role: 'user', content: instructions },
-      { role: 'user', content: message },
     ],
-    'You are an expert technical support engineer.',
+    systemPrompt,
     'gpt-3.5-turbo',
     true,
     true,
@@ -21,34 +35,46 @@ const generate = async (message: string, instructions: string) => {
   return content;
 };
 
-export const summarize = async (message: string) => {
+export const summarize = async (messages: ChatViewMessage[]) => {
   const instructions =
-    'Below is message describing the issue I am having. Please summarize it in a single sentence to use for a subject matter.';
-  return generate(message, instructions);
+    'Above is a conversation between a customer and an AI. Please summarize it in a single sentence to use for a subject matter. Do not add surrounding quotes or any other content, such as a "Subject" prefix. Subject matter:';
+  return generate(
+    messages,
+    instructions,
+    'You are a customer support agent, expert at summarization.',
+  );
 };
 
-export const getCategory = async (message: string) => {
-  const instructions = `Below is message describing an issue I am having. Based on this message, your task is to assign the message to one of the following categories. You should reply only with the category, and should not add any extra text to the response:\n\n${CATEGORIES.map(
+export const getCategory = async (messages: ChatViewMessage[]) => {
+  const instructions = `Above is a conversation between a customer and an AI. Based on this message, your task is to assign the conversation to one of the following categories. You should reply only with the category, and should not add any extra text to the response:\n\n${CATEGORIES.map(
     (c) => `- ${c}`,
   ).join('\n')}`;
-  return generate(message, instructions);
+  return generate(
+    messages,
+    instructions,
+    'You are a customer support agent, expert at categorization.',
+  );
 };
 
-export const getSeverity = async (message: string) => {
-  const instructions = `Below is message describing an issue I am having. Based on this message, your task is to assign the message to one of the following severity levels. Severity 1 is highest. You should reply only with the severity level, and should not add any extra text to the response:\n\n${SEVERITY.map(
+export const getSeverity = async (messages: ChatViewMessage[]) => {
+  const instructions = `Above is a conversation between a customer and an AI. Based on this message, your task is to assign the conversation to one of the following severity levels. Severity 1 is highest. You should reply only with the severity level, and should not add any extra text to the response:\n\n${SEVERITY.map(
     (c) => `- ${c}`,
   ).join('\n')}`;
-  return generate(message, instructions);
+  return generate(
+    messages,
+    instructions,
+    'You are a customer support agent, expert at categorization.',
+  );
 };
 
-export const improve = async (message: string) => {
-  const instructions = `Below is message describing an issue I am having. Please rewrite it into a concise message with all available information and no typos. Also follow these instructions:
+export const improve = async (messages: ChatViewMessage[]) => {
+  const instructions = `Above is a conversation between a customer and an AI. Please rewrite it into a concise message with all available information and no typos. Also follow these instructions:
 
-- Rewrite it so that a support agent can immediately see what is going wrong.
+- Rewrite it so that a support agent can immediately see what is going on.
 - Make sure to not omit any parts of the question.
-- Rewrite it in English if my message is another language.
+- Rewrite it in English if the conversation is in another language.
 - Just rewrite it with no additional tags. For instance, don't include a "Subject:" line.`;
-  return generate(message, instructions);
+  return generate(messages, instructions, 'You are a customer support agent.');
 };
 
 export const generateTicketData = async (
@@ -59,10 +85,10 @@ export const generateTicketData = async (
     return;
   }
 
-  const getCategoryPromise = getCategory(firstMessage);
-  const getSeverityPromise = getSeverity(firstMessage);
-  const summarizePromise = summarize(firstMessage);
-  const improvePromise = improve(firstMessage);
+  const getCategoryPromise = getCategory(messages);
+  const getSeverityPromise = getSeverity(messages);
+  const summarizePromise = summarize(messages);
+  const improvePromise = improve(messages);
 
   // Run the 4 tasks concurrently for faster ticket generation
   const [category, severity, subject, description] = await Promise.all([
@@ -74,13 +100,13 @@ export const generateTicketData = async (
 
   const transcript = messages
     .filter((m) => !m.tool_calls)
-    .map((m) => `Sender: ${m.role}\n\n${m.content || 'No answer'}`)
-    .join('\n\n===\n\n');
+    .map((m) => `${m.role}:${m.content || 'No answer'}`)
+    .join(`\n\n${'-'.repeat(80)}\n\n`);
 
   return {
     category,
     severity,
     subject,
-    description: `${description}\n\n${'-'.repeat(80)}\n\nFull transcript:\n\n${transcript}`,
+    description: `${description}\n\n${'='.repeat(80)}\nFull transcript:\n\n${transcript}`,
   };
 };

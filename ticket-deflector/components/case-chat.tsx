@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 
 import { type TicketGeneratedData, CaseForm } from '@/components/case-form';
 import { Chat } from '@/components/chat';
+import { DEFAULT_SUBMIT_CHAT_OPTIONS } from '@/lib/constants';
 import { generateTicketData } from '@/lib/ticket';
 
 import { useChatForm } from './chat-form-context';
@@ -34,11 +35,12 @@ export function CaseChat() {
 
   return (
     <ChatProvider
+      apiUrl={process.env.NEXT_PUBLIC_API_URL}
       chatOptions={{
-        apiUrl: process.env.NEXT_PUBLIC_API_URL,
         model: 'gpt-4-turbo-preview',
         systemPrompt:
-          'You are an expert AI technical support assistant from Markprompt who excels at helping people solving their issues. When generating a case, do not mention anything about assistance, next step, or whether an agent will reach out. Just say "Please complete the form submission below."',
+          process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
+          DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
         tool_choice: 'auto',
         tools: [
           {
