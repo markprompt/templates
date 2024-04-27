@@ -50,12 +50,12 @@ export function MessageActions({
   );
 
   const uniqueReferences = useMemo(() => {
-    return uniqBy(message.references || [], (r) => r.file.path);
+    return uniqBy(message.references || [], (r) => r.file.path).slice(0, 5);
   }, [message.references]);
 
   return (
     <div className={cn('flex flex-col', className)} {...props}>
-      <div className="flex flex-row">
+      <div className="flex flex-row items-start">
         <div className="flex-grow pt-1">
           {isLast && uniqueReferences.length > 0 && (
             <>
