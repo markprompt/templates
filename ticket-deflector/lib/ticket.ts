@@ -26,7 +26,7 @@ const generate = async (messages: ChatViewMessage[], systemPrompt: string) => {
       },
     ],
     systemPrompt,
-    'gpt-3.5-turbo',
+    'gpt-4-turbo-preview',
     true,
     true,
     false,
