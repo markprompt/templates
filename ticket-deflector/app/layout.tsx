@@ -11,8 +11,8 @@ import { cn } from '@/lib/utils';
 export const metadata = {
   metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   title: {
-    default: 'Markprompt Ticket Deflector',
-    template: `%s - Markprompt Ticket Deflector`,
+    default: 'Markprompt',
+    template: `%s - Markprompt`,
   },
   description:
     'An AI-powered ticket deflector and automatic case generation form, built with Markprompt.',
