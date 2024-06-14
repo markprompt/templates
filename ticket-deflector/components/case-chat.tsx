@@ -6,11 +6,7 @@ import { useCallback, useState } from 'react';
 
 import { type TicketGeneratedData, CaseForm } from '@/components/case-form';
 import { Chat } from '@/components/chat';
-import {
-  CHAT_DEFAULT_PROMPTS,
-  CHAT_WELCOME_MESSAGE,
-  DEFAULT_SUBMIT_CHAT_OPTIONS,
-} from '@/lib/constants';
+import { CHAT_DEFAULT_PROMPTS, CHAT_WELCOME_MESSAGE } from '@/lib/constants';
 import { generateTicketData } from '@/lib/ticket';
 
 import { useChatForm } from './chat-form-context';
@@ -44,9 +40,7 @@ export function CaseChat() {
       <ChatProvider
         apiUrl={process.env.NEXT_PUBLIC_API_URL}
         chatOptions={{
-          model: DEFAULT_SUBMIT_CHAT_OPTIONS.model,
-          systemPrompt: DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
-          tool_choice: 'auto',
+          assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID,
           tools: [
             {
               tool: {
@@ -110,8 +104,7 @@ export function CaseChat() {
         projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
         branding={{ show: false }}
         chat={{
-          systemPrompt: DEFAULT_SUBMIT_CHAT_OPTIONS.systemPrompt,
-          model: DEFAULT_SUBMIT_CHAT_OPTIONS.model,
+          assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID,
           defaultView: {
             message: CHAT_WELCOME_MESSAGE,
             prompts: CHAT_DEFAULT_PROMPTS,

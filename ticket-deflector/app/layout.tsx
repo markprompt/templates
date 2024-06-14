@@ -62,7 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex flex-col">
             <div className="flex flex-row gap-3 items-center pb-4">
-              {process.env.NEXT_PUBLIC_LOGO_ID && (
+              {process.env.NEXT_PUBLIC_LOGO_ID ? (
                 <Link
                   className="flex-none hover:opacity-50 transition"
                   href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
@@ -73,6 +73,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     alt="Logo"
                   />
                 </Link>
+              ) : (
+                process.env.NEXT_PUBLIC_LOGO_URL && (
+                  <Link
+                    className="flex-none hover:opacity-50 transition"
+                    href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
+                  >
+                    <img
+                      className="h-6"
+                      src={process.env.NEXT_PUBLIC_LOGO_URL}
+                      alt="Logo"
+                    />
+                  </Link>
+                )
               )}
               {process.env.NEXT_PUBLIC_TITLE && (
                 <p className="font-medium text-sm">

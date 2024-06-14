@@ -44,7 +44,7 @@ export function Chat({
   onNewChat: () => void;
 }) {
   const messages = useChatStore((state) => state.messages);
-  const selectConversation = useChatStore((state) => state.selectConversation);
+  const selectThread = useChatStore((state) => state.selectThread);
 
   const messageState = useChatStore(
     (state) => state.messages[state.messages.length - 1]?.state,
@@ -81,7 +81,7 @@ export function Chat({
                 'opacity-100': isChatting,
               })}
               onClick={() => {
-                selectConversation(undefined);
+                selectThread(undefined);
                 onNewChat();
               }}
             >
