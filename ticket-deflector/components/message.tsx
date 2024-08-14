@@ -7,7 +7,6 @@ import {
 import Image from 'next/image';
 import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 
 import { CodeBlock } from '@/components/codeblock';
 import { MemoizedReactMarkdown } from '@/components/markdown';
@@ -100,7 +99,7 @@ export function Message({
             {message.content && (
               <MemoizedReactMarkdown
                 className="w-full overflow-hidden prose prose-sm break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 prose-pre:rounded-md max-w-full prose-pre:text-sm prose-code:text-[0.825rem]"
-                remarkPlugins={[remarkGfm, remarkMath]}
+                remarkPlugins={[remarkGfm]}
                 components={{
                   p({ children }) {
                     return <p className="mb-2 last:mb-0">{children}</p>;
