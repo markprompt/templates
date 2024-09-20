@@ -129,7 +129,7 @@ export function Chat({
           )}
         </CardContent>
       </div>
-      {isChatting && (
+      {process.env.NEXT_PUBLIC_SHOW_FOOTER && isChatting && (
         <CardFooter className="flex flex-row items-center space-x-4 py-4">
           <p className="flex-grow text-sm text-muted-foreground text-right">
             Still need help?

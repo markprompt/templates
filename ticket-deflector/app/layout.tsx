@@ -68,7 +68,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
                 >
                   <img
-                    className="h-6"
+                    className={process.env.NEXT_PUBLIC_LOGO_CLASS ?? 'h-6'}
                     src={`/logos/${process.env.NEXT_PUBLIC_LOGO_ID}.svg`}
                     alt="Logo"
                   />
