@@ -2,7 +2,6 @@
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
 import '@markprompt/css';
 import '@/app/globals.css';
-
 import Link from 'next/link';
 
 import { Icons } from '@/components/icons';

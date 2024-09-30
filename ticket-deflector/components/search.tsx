@@ -3,10 +3,7 @@
 
 import { Markprompt } from '@markprompt/react';
 
-import { CHAT_DEFAULT_PROMPTS, CHAT_WELCOME_MESSAGE } from '@/lib/constants';
-
 import { Icons } from './icons';
-import { Input } from './ui/input';
 
 export function Search() {
   return (
