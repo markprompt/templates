@@ -10,10 +10,8 @@ export function Search() {
     <>
       <Markprompt
         apiUrl={process.env.NEXT_PUBLIC_API_URL}
-        projectKey={
-          process.env.NEXT_PUBLIC_MARKPROMPT_PROJECT_KEY ?? 'enter-a-key'
-        }
-        defaultView="search"
+        projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+        defaultView="chat"
         display="dialog"
         chat={{
           assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID,
@@ -25,31 +23,28 @@ export function Search() {
             ),
           },
         }}
-        // feedback={{ enabled: true }}
-        // references={{ display: 'end' }}
         search={{
           enabled: true,
-          // askLabel: 'Ask Acme',
-          // defaultView: {
-          //   searchesHeading: 'Recommended for you',
-          //   searches: [
-          //     { title: 'Welcome to Acme', href: '/' },
-          //     { title: 'Get Started', href: '/' },
-          //     { title: 'Onboarding', href: '/' },
-          //     { title: 'Payments', href: '/' },
-          //     { title: 'User Management', href: '/' },
-          //     { title: 'Acme CLI', href: '/' },
-          //     { title: 'How to build an Acme app', href: '/' },
-          //     { title: 'How to setup authentication', href: '/' },
-          //     { title: 'How to invite users', href: '/' },
-          //   ],
-          // },
-          // provider: {
-          //   name: 'algolia',
-          //   apiKey: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!,
-          //   appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
-          //   indexName: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME!,
-          // },
+          askLabel: process.env.NEXT_PUBLIC_SEARCH_ASK_LABEL,
+          defaultView: {
+            searchesHeading: 'Recommended for you',
+            searches:
+              process.env.NEXT_PUBLIC_SEARCH_DEFAULT_VIEW_SEARCHES?.split(
+                ',',
+              ).map((search) => ({
+                title: search.trim(),
+                href: '/',
+              })),
+            // { title: 'Welcome to Acme', href: '/' },
+            // { title: 'Get Started', href: '/' },
+            // { title: 'Onboarding', href: '/' },
+            // { title: 'Payments', href: '/' },
+            // { title: 'User Management', href: '/' },
+            // { title: 'Acme CLI', href: '/' },
+            // { title: 'How to build an Acme app', href: '/' },
+            // { title: 'How to setup authentication', href: '/' },
+            // { title: 'How to invite users', href: '/' },
+          },
           getTitle: (result) => result.content || undefined,
         }}
         close={{ visible: false }}
