@@ -99,91 +99,93 @@ export function CaseChat() {
           {ticketData && <CaseForm {...ticketData} />}
         </div>
       </ChatProvider>
-      <Markprompt
-        apiUrl={process.env.NEXT_PUBLIC_API_URL}
-        projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
-        branding={{ show: false }}
-        chat={{
-          assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID,
-          defaultView: {
-            message: CHAT_WELCOME_MESSAGE,
-            prompts: CHAT_DEFAULT_PROMPTS,
-          },
-          avatars: {
-            user: '/avatars/user.png',
-            assistant: () => (
-              <Icons.logo className="w-[18px] h-[18px] text-black ml-[-1.5px]" />
-            ),
-          },
-        }}
-        menu={{
-          sections: [
-            {
-              entries: [
-                {
-                  title: 'Documentation',
-                  type: 'link',
-                  href: 'https://markprompt.com/docs',
-                  iconId: 'book',
-                },
-                {
-                  title: 'Help center',
-                  type: 'link',
-                  href: 'https://markprompt.com/docs',
-                  iconId: 'magnifying-glass',
-                },
-                {
-                  title: 'Changelog',
-                  type: 'link',
-                  iconId: 'newspaper',
-                  href: 'https://markprompt.com',
-                  target: '_blank',
-                },
-                {
-                  title: 'Contact sales',
-                  type: 'link',
-                  iconId: 'chat',
-                  href: 'https://markprompt.com',
-                  target: '_blank',
-                },
-              ],
+      {process.env.NEXT_PUBLIC_INCLUDE_SEARCH !== 'true' && (
+        <Markprompt
+          apiUrl={process.env.NEXT_PUBLIC_API_URL}
+          projectKey={process.env.NEXT_PUBLIC_PROJECT_KEY!}
+          branding={{ show: false }}
+          chat={{
+            assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID,
+            defaultView: {
+              message: CHAT_WELCOME_MESSAGE,
+              prompts: CHAT_DEFAULT_PROMPTS,
             },
-            {
-              heading: 'Follow us',
-              entries: [
-                {
-                  title: 'Twitter',
-                  type: 'link',
-                  href: 'https://twitter.com',
-                  target: '_blank',
-                },
-                {
-                  title: 'Discord',
-                  type: 'link',
-                  href: 'https://discord.com',
-                  target: '_blank',
-                },
-                {
-                  title: 'Status',
-                  type: 'link',
-                  href: 'https://markprompt.com',
-                  target: '_blank',
-                },
-              ],
+            avatars: {
+              user: '/avatars/user.png',
+              assistant: () => (
+                <Icons.logo className="w-[18px] h-[18px] text-black ml-[-1.5px]" />
+              ),
             },
-            {
-              entries: [
-                {
-                  title: 'Ask a question',
-                  type: 'button',
-                  iconId: 'sparkles',
-                  action: 'chat',
-                },
-              ],
-            },
-          ],
-        }}
-      />
+          }}
+          menu={{
+            sections: [
+              {
+                entries: [
+                  {
+                    title: 'Documentation',
+                    type: 'link',
+                    href: 'https://markprompt.com/docs',
+                    iconId: 'book',
+                  },
+                  {
+                    title: 'Help center',
+                    type: 'link',
+                    href: 'https://markprompt.com/docs',
+                    iconId: 'magnifying-glass',
+                  },
+                  {
+                    title: 'Changelog',
+                    type: 'link',
+                    iconId: 'newspaper',
+                    href: 'https://markprompt.com',
+                    target: '_blank',
+                  },
+                  {
+                    title: 'Contact sales',
+                    type: 'link',
+                    iconId: 'chat',
+                    href: 'https://markprompt.com',
+                    target: '_blank',
+                  },
+                ],
+              },
+              {
+                heading: 'Follow us',
+                entries: [
+                  {
+                    title: 'Twitter',
+                    type: 'link',
+                    href: 'https://twitter.com',
+                    target: '_blank',
+                  },
+                  {
+                    title: 'Discord',
+                    type: 'link',
+                    href: 'https://discord.com',
+                    target: '_blank',
+                  },
+                  {
+                    title: 'Status',
+                    type: 'link',
+                    href: 'https://markprompt.com',
+                    target: '_blank',
+                  },
+                ],
+              },
+              {
+                entries: [
+                  {
+                    title: 'Ask a question',
+                    type: 'button',
+                    iconId: 'sparkles',
+                    action: 'chat',
+                  },
+                ],
+              },
+            ],
+          }}
+        />
+      )}
     </>
   );
 }

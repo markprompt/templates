@@ -2,10 +2,12 @@
 import { Inter as FontSans, Fira_Code as FontMono } from 'next/font/google';
 import '@markprompt/css';
 import '@/app/globals.css';
+
 import Link from 'next/link';
 
 import { Icons } from '@/components/icons';
 import { Providers } from '@/components/providers';
+import { Search } from '@/components/search';
 import { cn } from '@/lib/utils';
 
 export const metadata = {
@@ -49,7 +51,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased px-8 py-4',
+          'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
           fontMono.variable,
         )}
@@ -61,14 +63,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <div className="flex flex-col">
-            <div className="flex flex-row gap-3 items-center pb-4">
+            <div className="flex flex-row gap-4 items-center pb-4 px-8 py-4">
               {process.env.NEXT_PUBLIC_LOGO_ID ? (
                 <Link
                   className="flex-none hover:opacity-50 transition"
                   href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
                 >
                   <img
-                    className={process.env.NEXT_PUBLIC_LOGO_CLASS ?? 'h-6'}
+                    className={
+                      process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX
+                        ? undefined
+                        : process.env.NEXT_PUBLIC_LOGO_CLASS ?? 'h-6'
+                    }
+                    style={{
+                      height: process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX
+                        ? `${process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX}px`
+                        : undefined,
+                    }}
                     src={`/logos/${process.env.NEXT_PUBLIC_LOGO_ID}.svg`}
                     alt="Logo"
                   />
@@ -80,7 +91,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     href="https://github.com/markprompt/templates/tree/main/ticket-deflector"
                   >
                     <img
-                      className={process.env.NEXT_PUBLIC_LOGO_CLASS ?? 'h-6'}
+                      className={
+                        process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX
+                          ? undefined
+                          : process.env.NEXT_PUBLIC_LOGO_CLASS ?? 'h-6'
+                      }
+                      style={{
+                        height: process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX
+                          ? `${process.env.NEXT_PUBLIC_LOGO_HEIGHT_PX}px`
+                          : undefined,
+                      }}
                       src={process.env.NEXT_PUBLIC_LOGO_URL}
                       alt="Logo"
                     />
@@ -93,6 +113,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </p>
               )}
               <div className="flex-grow" />
+              {process.env.NEXT_PUBLIC_INCLUDE_SEARCH === 'true' && <Search />}
               {process.env.NEXT_PUBLIC_SHOW_GITHUB === 'true' && (
                 <Link
                   className="hover:opacity-50 transition"
@@ -102,7 +123,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </Link>
               )}
             </div>
-            <main className="flex flex-col flex-1 bg-muted/50 mx-auto max-w-screen-md w-full">
+            <main className="flex flex-col flex-1 bg-muted/50 mx-auto max-w-screen-md w-full pt-8">
               {children}
             </main>
           </div>
